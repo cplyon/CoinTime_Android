@@ -1,6 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext.kotlin_version = "1.4.0"
+
     repositories {
         google()
         jcenter()
@@ -23,4 +24,10 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+// Define versions in a single place
+ext {
+    room_version = "2.2.5"
+    lifecycle_version = "2.2.0"
 }
