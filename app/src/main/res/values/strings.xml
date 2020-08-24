@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">CoinTime</string>
     <string name="action_search">Search…</string>
+    <string name="add_coin">Add new coin...</string>
 </resources>
