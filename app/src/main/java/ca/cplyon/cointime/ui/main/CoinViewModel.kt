@@ -1,4 +1,4 @@
-package ca.cplyon.cointime
+package ca.cplyon.cointime.ui.main
 
 import androidx.lifecycle.*
 import ca.cplyon.cointime.data.Coin
