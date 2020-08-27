@@ -21,17 +21,23 @@ class CoinViewModel(private val repository: CoinRepository ) : ViewModel() {
     }
 
 
-private fun filterTasks(coinResult: Result<List<Coin>>): LiveData<List<Coin>> {
-    val result = MutableLiveData<List<Coin>>()
-    if (coinResult is Success) {
-        viewModelScope.launch {
-            result.value = coinResult.data
+    private fun filterTasks(coinResult: Result<List<Coin>>): LiveData<List<Coin>> {
+        val result = MutableLiveData<List<Coin>>()
+        if (coinResult is Success) {
+            viewModelScope.launch {
+                result.value = coinResult.data
+            }
+        } else {
+            result.value = emptyList()
         }
-    } else {
-        result.value = emptyList()
+        return result
     }
-    return result
+
+
 }
 
 
+@Suppress("UNCHECKED_CAST")
+class CoinViewModelFactory (private val coinRepository: CoinRepository) : ViewModelProvider.NewInstanceFactory() {
+    override fun <T : ViewModel> create(modelClass: Class<T>) = (CoinViewModel(coinRepository) as T)
 }
