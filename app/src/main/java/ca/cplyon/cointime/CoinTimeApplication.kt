@@ -8,6 +8,9 @@ import ca.cplyon.cointime.data.source.local.CoinRoomDatabase
 
 class CoinTimeApplication : Application() {
 
+    val coinRepository: CoinRepository
+        get() = ServiceLocator.provideCoinRepository(this)
+
     override fun onCreate() {
         super.onCreate()
 

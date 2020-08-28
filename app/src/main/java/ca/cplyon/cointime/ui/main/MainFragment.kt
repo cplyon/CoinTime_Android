@@ -12,6 +12,7 @@ import androidx.room.Room
 import ca.cplyon.cointime.CoinListAdapter
 import ca.cplyon.cointime.CoinTimeApplication
 import ca.cplyon.cointime.R
+import ca.cplyon.cointime.data.Coin
 import ca.cplyon.cointime.data.source.CoinRepository
 import ca.cplyon.cointime.data.source.local.CoinLocalDataSource
 import ca.cplyon.cointime.data.source.local.CoinRoomDatabase
@@ -25,19 +26,15 @@ class MainFragment : Fragment() {
     }
 
     private val viewModel by viewModels<CoinViewModel>() {
-        CoinViewModelFactory(
-            CoinRepository((CoinLocalDataSource(
-            Room.databaseBuilder(requireContext().applicationContext,
-            CoinRoomDatabase::class.java, "Tasks.db")
-            .build().coinDao()))))
+        CoinViewModelFactory((requireContext().applicationContext as CoinTimeApplication).coinRepository)
     }
     private var fragmentBinding: MainFragmentBinding? = null
+    private var inc = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         setHasOptionsMenu(true)
         val binding = MainFragmentBinding.inflate(layoutInflater, container, false)
-        fragmentBinding = binding
         val adapter = CoinListAdapter(this.requireContext())
         binding.recyclerview.adapter = adapter
         binding.recyclerview.layoutManager = LinearLayoutManager(this.requireContext())
@@ -46,7 +43,7 @@ class MainFragment : Fragment() {
             coins?.let {adapter.setCoins(it)}
         })
 
-
+        fragmentBinding = binding
         return binding.root
     }
 
@@ -70,6 +67,18 @@ class MainFragment : Fragment() {
         })
 
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        fragmentBinding?.addTaskFab.let {
+            it?.setOnClickListener {
+                // open new Coin fragment
+                viewModel.addCoin(Coin("Canada", "10 cents", 1990 + inc, "", "Hi"))
+                inc++
+            }
+        }
     }
 
 }
