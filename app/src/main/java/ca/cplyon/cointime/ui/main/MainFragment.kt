@@ -1,22 +1,17 @@
 package ca.cplyon.cointime.ui.main
 
-import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
 import ca.cplyon.cointime.CoinListAdapter
 import ca.cplyon.cointime.CoinTimeApplication
 import ca.cplyon.cointime.R
 import ca.cplyon.cointime.data.Coin
-import ca.cplyon.cointime.data.source.CoinRepository
-import ca.cplyon.cointime.data.source.local.CoinLocalDataSource
-import ca.cplyon.cointime.data.source.local.CoinRoomDatabase
 import ca.cplyon.cointime.databinding.MainFragmentBinding
+import ca.cplyon.cointime.ui.detail.CoinDetailFragment
 
 
 class MainFragment : Fragment() {
@@ -25,7 +20,7 @@ class MainFragment : Fragment() {
         fun newInstance() = MainFragment()
     }
 
-    private val viewModel by viewModels<CoinViewModel>() {
+    private val viewModel by viewModels<CoinViewModel> {
         CoinViewModelFactory((requireContext().applicationContext as CoinTimeApplication).coinRepository)
     }
     private var fragmentBinding: MainFragmentBinding? = null
@@ -39,8 +34,8 @@ class MainFragment : Fragment() {
         binding.recyclerview.adapter = adapter
         binding.recyclerview.layoutManager = LinearLayoutManager(this.requireContext())
 
-        var i = viewModel.items.observe(this.requireActivity(), Observer { coins ->
-            coins?.let {adapter.setCoins(it)}
+        var i = viewModel.items.observe(this.requireActivity(), { coins ->
+            coins?.let { adapter.setCoins(it) }
         })
 
         fragmentBinding = binding
@@ -77,6 +72,11 @@ class MainFragment : Fragment() {
                 // open new Coin fragment
                 viewModel.addCoin(Coin("Canada", "10 cents", 1990 + inc, "", "Hi"))
                 inc++
+                activity?.supportFragmentManager?.beginTransaction()
+                    ?.replace(R.id.main, CoinDetailFragment.newInstance(null), "new_coin")
+                    ?.addToBackStack(null)
+                    ?.commit()
+
             }
         }
     }
