@@ -10,7 +10,7 @@ import ca.cplyon.cointime.data.Coin
 import ca.cplyon.cointime.databinding.FragmentCoinDetailBinding
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "coin"
+const val ARG_PARAM1 = "coin"
 
 /**
  * A simple [Fragment] subclass.
@@ -37,9 +37,18 @@ class CoinDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        setHasOptionsMenu(false)
         val binding = FragmentCoinDetailBinding.inflate(layoutInflater, container, false)
-        binding.coinText.text = coin?.toString()
+        val c = coin
+        if (c != null) {
+            binding.coinCountry.text = c.country
+            binding.coinDenomination.text = c.denomination
+            binding.coinYear.text = c.year.toString()
+            binding.coinMintMark.text = c.mintMark
+            binding.coinNotes.text = c.notes
+        } else {
+            // TODO: enter new coin details
+        }
         fragmentBinding = binding
         return binding.root
     }

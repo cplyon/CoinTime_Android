@@ -1,18 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#03A9F4"
+    android:orientation="vertical"
     tools:context=".ui.detail.CoinDetailFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:id="@+id/coinText"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#03A9F4"
+        android:id="@+id/coinCountry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/hello_blank_fragment"
         android:textSize="18sp" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/coinDenomination"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_blank_fragment"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/coinYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_blank_fragment"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/coinMintMark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_blank_fragment"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/coinNotes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_blank_fragment"
+        android:textSize="18sp" />
+
+</LinearLayout>

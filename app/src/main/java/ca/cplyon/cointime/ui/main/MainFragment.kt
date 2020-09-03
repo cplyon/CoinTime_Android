@@ -6,15 +6,14 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import ca.cplyon.cointime.CoinListAdapter
 import ca.cplyon.cointime.CoinTimeApplication
+import ca.cplyon.cointime.MainActivity
 import ca.cplyon.cointime.R
 import ca.cplyon.cointime.data.Coin
 import ca.cplyon.cointime.databinding.MainFragmentBinding
-import ca.cplyon.cointime.ui.detail.CoinDetailFragment
 
 
-class MainFragment : Fragment() {
+class MainFragment : Fragment(), CoinListAdapter.ContentListener {
 
     companion object {
         fun newInstance() = MainFragment()
@@ -30,11 +29,11 @@ class MainFragment : Fragment() {
                               savedInstanceState: Bundle?): View {
         setHasOptionsMenu(true)
         val binding = MainFragmentBinding.inflate(layoutInflater, container, false)
-        val adapter = CoinListAdapter(this.requireContext())
+        val adapter = CoinListAdapter(this.requireContext(), this)
         binding.recyclerview.adapter = adapter
         binding.recyclerview.layoutManager = LinearLayoutManager(this.requireContext())
 
-        var i = viewModel.items.observe(this.requireActivity(), { coins ->
+        viewModel.items.observe(this.requireActivity(), { coins ->
             coins?.let { adapter.setCoins(it) }
         })
 
@@ -72,13 +71,13 @@ class MainFragment : Fragment() {
                 // open new Coin fragment
                 viewModel.addCoin(Coin("Canada", "10 cents", 1990 + inc, "", "Hi"))
                 inc++
-                activity?.supportFragmentManager?.beginTransaction()
-                    ?.replace(R.id.main, CoinDetailFragment.newInstance(null), "new_coin")
-                    ?.addToBackStack(null)
-                    ?.commit()
-
+                (context as MainActivity).launchDetailFragment(null, "new_coin")
             }
         }
+    }
+
+    override fun onItemClicked(coin: Coin?) {
+        (context as MainActivity).launchDetailFragment(coin, "detail_coin")
     }
 
 }

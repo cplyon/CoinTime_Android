@@ -27,7 +27,11 @@ object ServiceLocator {
     }
 
     private fun createDatabase(context: Context) : CoinRoomDatabase {
-        val result = Room.databaseBuilder(context.applicationContext, CoinRoomDatabase::class.java, "Tasks.db").build()
+        val result = Room.databaseBuilder(
+            context.applicationContext,
+            CoinRoomDatabase::class.java,
+            "Coins.db"
+        ).build()
         database = result
         return result
     }
