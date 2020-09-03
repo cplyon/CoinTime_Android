@@ -28,6 +28,8 @@ class MainFragment : Fragment(), CoinListAdapter.ContentListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         setHasOptionsMenu(true)
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
         val binding = MainFragmentBinding.inflate(layoutInflater, container, false)
         val adapter = CoinListAdapter(this.requireContext(), this)
         binding.recyclerview.adapter = adapter

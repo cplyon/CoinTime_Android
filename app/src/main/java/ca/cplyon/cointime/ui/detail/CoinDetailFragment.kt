@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import ca.cplyon.cointime.MainActivity
 import ca.cplyon.cointime.data.Coin
 import ca.cplyon.cointime.databinding.FragmentCoinDetailBinding
 
@@ -26,18 +26,13 @@ class CoinDetailFragment : Fragment() {
         arguments?.let {
             coin = it.getSerializable(ARG_PARAM1) as Coin?
         }
-
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-            // Handle the back button event
-            activity?.supportFragmentManager?.popBackStack()
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        setHasOptionsMenu(false)
+
         val binding = FragmentCoinDetailBinding.inflate(layoutInflater, container, false)
         val c = coin
         if (c != null) {
@@ -49,6 +44,10 @@ class CoinDetailFragment : Fragment() {
         } else {
             // TODO: enter new coin details
         }
+
+        setHasOptionsMenu(true)
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         fragmentBinding = binding
         return binding.root
     }
