@@ -68,14 +68,16 @@ class MainFragment : Fragment(), CoinListAdapter.ContentListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        fragmentBinding?.addTaskFab.let {
-            it?.setOnClickListener {
-                // open new Coin fragment
-                viewModel.addCoin(Coin("Canada", "10 cents", 1990 + inc, "", "Hi"))
-                inc++
-                (context as MainActivity).launchDetailFragment(null, "new_coin")
-            }
+        fragmentBinding?.addCoinFab?.setOnClickListener {
+
+            // TODO: delete this code
+            viewModel.addCoin(Coin("Canada", "10 cents", 1990 + inc, "", "Hi"))
+            inc++
+
+            // open new Coin fragment
+            (context as MainActivity).launchDetailFragment(null, "new_coin")
         }
+
     }
 
     override fun onItemClicked(coin: Coin?) {
