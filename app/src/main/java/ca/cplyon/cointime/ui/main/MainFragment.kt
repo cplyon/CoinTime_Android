@@ -31,9 +31,10 @@ class MainFragment : Fragment(), CoinListAdapter.ContentListener {
         (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         val binding = MainFragmentBinding.inflate(layoutInflater, container, false)
+
         val adapter = CoinListAdapter(this.requireContext(), this)
         binding.recyclerview.adapter = adapter
-        binding.recyclerview.layoutManager = LinearLayoutManager(this.requireContext())
+        binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
 
         viewModel.items.observe(this.requireActivity(), { coins ->
             coins?.let { adapter.setCoins(it) }

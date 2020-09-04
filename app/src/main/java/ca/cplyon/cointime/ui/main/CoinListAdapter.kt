@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ca.cplyon.cointime.data.Coin
 import ca.cplyon.cointime.databinding.RecyclerviewItemBinding
+import kotlinx.android.synthetic.main.recyclerview_item.view.*
 
 class CoinListAdapter internal constructor(
     private val context: Context,
@@ -29,16 +30,23 @@ class CoinListAdapter internal constructor(
         RecyclerView.ViewHolder(
             itemView
         ) {
-        val coinItemView = binding.textView
+        val coinItemView = binding.listItem
         var currentCoin: Coin? = null
     }
 
     override fun onBindViewHolder(holder: CoinViewHolder, position: Int) {
         val currentCoin = coins[position]
-        holder.coinItemView.text = currentCoin.toString()
+        holder.coinItemView.country.text = currentCoin.country
+        val detailString = buildString {
+            append(currentCoin.denomination)
+            append(" ")
+            append(currentCoin.year)
+            append(currentCoin.mintMark)
+        }
+        holder.coinItemView.details.text = detailString
         holder.currentCoin = currentCoin
 
-        binding.textView.setOnClickListener {
+        binding.listItem.setOnClickListener {
             listener.onItemClicked(currentCoin)
         }
 
