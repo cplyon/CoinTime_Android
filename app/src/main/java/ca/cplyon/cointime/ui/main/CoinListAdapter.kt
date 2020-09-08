@@ -10,7 +10,7 @@ import ca.cplyon.cointime.databinding.RecyclerviewItemBinding
 import kotlinx.android.synthetic.main.recyclerview_item.view.*
 
 class CoinListAdapter internal constructor(
-    private val context: Context,
+    context: Context,
     private val listener: ContentListener
 ) : RecyclerView.Adapter<CoinListAdapter.CoinViewHolder>() {
 

@@ -3,5 +3,12 @@
     <string name="app_name">CoinTime</string>
     <string name="action_search">Search…</string>
     <string name="add_coin">Add new coin…</string>
-    <string name="hello_blank_fragment">Hello detail view!</string>
+    <string name="action_delete">Delete Coin</string>
+    <string name="action_edit">Edit Coin Details</string>
+    <string name="action_save">Save Coin Details</string>
+    <string name="country">Country</string>
+    <string name="denomination">Denomination</string>
+    <string name="year">Year</string>
+    <string name="mint_mark">Mint Mark</string>
+    <string name="notes">Notes</string>
 </resources>

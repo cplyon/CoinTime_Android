@@ -1,13 +1,12 @@
 package ca.cplyon.cointime.ui.detail
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import ca.cplyon.cointime.MainActivity
+import ca.cplyon.cointime.R
 import ca.cplyon.cointime.data.Coin
-import ca.cplyon.cointime.databinding.FragmentCoinDetailBinding
+import ca.cplyon.cointime.databinding.DetailFragmentBinding
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 const val ARG_PARAM1 = "coin"
@@ -19,13 +18,17 @@ const val ARG_PARAM1 = "coin"
  */
 class CoinDetailFragment : Fragment() {
     private var coin: Coin? = null
-    private var fragmentBinding: FragmentCoinDetailBinding? = null
+    private var fragmentBinding: DetailFragmentBinding? = null
+    private lateinit var editButton: MenuItem
+    private lateinit var saveButton: MenuItem
+    private var editMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             coin = it.getSerializable(ARG_PARAM1) as Coin?
         }
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -33,20 +36,21 @@ class CoinDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val binding = FragmentCoinDetailBinding.inflate(layoutInflater, container, false)
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        val binding = DetailFragmentBinding.inflate(layoutInflater, container, false)
+
         val c = coin
         if (c != null) {
-            binding.coinCountry.text = c.country
-            binding.coinDenomination.text = c.denomination
-            binding.coinYear.text = c.year.toString()
-            binding.coinMintMark.text = c.mintMark
-            binding.coinNotes.text = c.notes
+            binding.coinCountry.setText(c.country)
+            binding.coinDenomination.setText(c.denomination)
+            binding.coinYear.setText(c.year.toString())
+            binding.coinMintMark.setText(c.mintMark)
+            binding.coinNotes.setText(c.notes)
         } else {
             // TODO: enter new coin details
+            editMode = true
         }
-
-        setHasOptionsMenu(true)
-        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         fragmentBinding = binding
         return binding.root
@@ -55,6 +59,50 @@ class CoinDetailFragment : Fragment() {
     override fun onDestroyView() {
         fragmentBinding = null
         super.onDestroyView()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.detail_menu, menu)
+        editButton = menu.findItem(R.id.action_edit)
+        saveButton = menu.findItem(R.id.action_save)
+        setEditMode(editMode)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.action_delete -> {
+            true
+        }
+
+        R.id.action_edit -> {
+            setEditMode(true)
+            true
+        }
+
+        R.id.action_save -> {
+            setEditMode(false)
+            true
+        }
+
+        else -> {
+            false
+        }
+    }
+
+    private fun setEditMode(enabled: Boolean) {
+        editMode = enabled
+        saveButton.isVisible = enabled
+        editButton.isVisible = !enabled
+
+        fragmentBinding?.let {
+            it.coinCountry.isEnabled = enabled
+            it.coinDenomination.isEnabled = enabled
+            it.coinYear.isEnabled = enabled
+            it.coinMintMark.isEnabled = enabled
+            it.coinNotes.isEnabled = enabled
+        }
+
     }
 
     companion object {

@@ -10,13 +10,13 @@
         android:id="@+id/coin_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="Obverse"
         android:src="@drawable/ic_default_coin" />
 
     <LinearLayout
-        android:id="@+id/list_item_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/coin_image"
+        android:layout_toEndOf="@+id/coin_image"
         android:background="@android:color/holo_orange_light"
         android:orientation="vertical">
 

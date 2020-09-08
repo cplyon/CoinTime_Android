@@ -1,45 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.detail.CoinDetailFragment">
 
-    <TextView
+    <EditText
         android:id="@+id/coinCountry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment"
+        android:enabled="false"
+        android:hint="@string/country"
+        android:importantForAutofill="no"
+        android:inputType="textCapCharacters"
         android:textSize="18sp" />
 
-    <TextView
+    <EditText
         android:id="@+id/coinDenomination"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment"
+        android:enabled="false"
+        android:hint="@string/denomination"
+        android:importantForAutofill="no"
+        android:inputType="text"
         android:textSize="18sp" />
 
-    <TextView
+    <EditText
         android:id="@+id/coinYear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment"
+        android:enabled="false"
+        android:hint="@string/year"
+        android:importantForAutofill="no"
+        android:inputType="number"
         android:textSize="18sp" />
 
-    <TextView
+    <EditText
         android:id="@+id/coinMintMark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment"
+        android:enabled="false"
+        android:hint="@string/mint_mark"
+        android:importantForAutofill="no"
+        android:inputType="text"
         android:textSize="18sp" />
 
-    <TextView
+    <EditText
         android:id="@+id/coinNotes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment"
+        android:enabled="false"
+        android:hint="@string/notes"
+        android:importantForAutofill="no"
+        android:inputType="text"
         android:textSize="18sp" />
 
 </LinearLayout>
