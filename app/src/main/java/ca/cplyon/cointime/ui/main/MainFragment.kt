@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import ca.cplyon.cointime.CoinTimeApplication
 import ca.cplyon.cointime.MainActivity
@@ -19,9 +19,10 @@ class MainFragment : Fragment(), CoinListAdapter.ContentListener {
         fun newInstance() = MainFragment()
     }
 
-    private val viewModel by viewModels<CoinViewModel> {
+    private val viewModel by activityViewModels<CoinViewModel> {
         CoinViewModelFactory((requireContext().applicationContext as CoinTimeApplication).coinRepository)
     }
+
     private var fragmentBinding: MainFragmentBinding? = null
     private var inc = 0
 

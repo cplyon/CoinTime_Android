@@ -2,10 +2,7 @@ package ca.cplyon.cointime.data.source.local
 
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import ca.cplyon.cointime.data.Coin
 
 @Dao
@@ -19,4 +16,7 @@ interface CoinDao {
 
     @Query("SELECT * FROM coin_table")
     fun observeCoins(): LiveData<List<Coin>>
+
+    @Delete()
+    suspend fun deleteCoin(coin: Coin)
 }

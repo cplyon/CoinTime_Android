@@ -8,6 +8,7 @@ interface CoinDataSource {
 
     suspend fun getAllCoins(): Result<List<Coin>>
     suspend fun addCoin(coin: Coin)
+    suspend fun deleteCoin(coin: Coin)
 
     fun observeCoins(): LiveData<Result<List<Coin>>>
 }

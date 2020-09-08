@@ -23,4 +23,8 @@ class CoinRepository(
     fun observeCoins(): LiveData<Result<List<Coin>>> {
         return localDataSource.observeCoins()
     }
+
+    suspend fun deleteCoin(coin: Coin) {
+        localDataSource.deleteCoin(coin)
+    }
 }

@@ -10,7 +10,8 @@ import kotlinx.coroutines.launch
 
 class CoinViewModel(private val repository: CoinRepository ) : ViewModel() {
 
-    private var _items: LiveData<List<Coin>> = repository.observeCoins().switchMap { filterTasks(it) }
+    private var _items: LiveData<List<Coin>> =
+        repository.observeCoins().switchMap { filterTasks(it) }
     val items: LiveData<List<Coin>> = _items
 
     /**
@@ -18,6 +19,10 @@ class CoinViewModel(private val repository: CoinRepository ) : ViewModel() {
      */
     fun addCoin(coin: Coin) = viewModelScope.launch(Dispatchers.IO) {
         repository.addCoin(coin)
+    }
+
+    fun deleteCoin(coin: Coin) = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteCoin(coin)
     }
 
 

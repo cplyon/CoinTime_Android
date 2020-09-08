@@ -3,10 +3,14 @@ package ca.cplyon.cointime.ui.detail
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import ca.cplyon.cointime.CoinTimeApplication
 import ca.cplyon.cointime.MainActivity
 import ca.cplyon.cointime.R
 import ca.cplyon.cointime.data.Coin
 import ca.cplyon.cointime.databinding.DetailFragmentBinding
+import ca.cplyon.cointime.ui.main.CoinViewModel
+import ca.cplyon.cointime.ui.main.CoinViewModelFactory
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 const val ARG_PARAM1 = "coin"
@@ -19,9 +23,14 @@ const val ARG_PARAM1 = "coin"
 class CoinDetailFragment : Fragment() {
     private var coin: Coin? = null
     private var fragmentBinding: DetailFragmentBinding? = null
+    private lateinit var deleteButton: MenuItem
     private lateinit var editButton: MenuItem
     private lateinit var saveButton: MenuItem
     private var editMode = false
+
+    private val viewModel by activityViewModels<CoinViewModel> {
+        CoinViewModelFactory((requireContext().applicationContext as CoinTimeApplication).coinRepository)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +57,6 @@ class CoinDetailFragment : Fragment() {
             binding.coinMintMark.setText(c.mintMark)
             binding.coinNotes.setText(c.notes)
         } else {
-            // TODO: enter new coin details
             editMode = true
         }
 
@@ -63,6 +71,7 @@ class CoinDetailFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.detail_menu, menu)
+        deleteButton = menu.findItem(R.id.action_delete)
         editButton = menu.findItem(R.id.action_edit)
         saveButton = menu.findItem(R.id.action_save)
         setEditMode(editMode)
@@ -72,6 +81,11 @@ class CoinDetailFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.action_delete -> {
+            val c = coin
+            if (c != null) {
+                viewModel.deleteCoin(c)
+                (context as MainActivity).onBackPressed()
+            }
             true
         }
 
@@ -91,10 +105,14 @@ class CoinDetailFragment : Fragment() {
     }
 
     private fun setEditMode(enabled: Boolean) {
+
+        // hide/disable these controls in edit mode
+        editButton.isVisible = !enabled
+        deleteButton.isEnabled = !enabled
+
+        // show/enable these controls in edit mode
         editMode = enabled
         saveButton.isVisible = enabled
-        editButton.isVisible = !enabled
-
         fragmentBinding?.let {
             it.coinCountry.isEnabled = enabled
             it.coinDenomination.isEnabled = enabled
