@@ -24,21 +24,28 @@ class MainFragment : Fragment(), CoinListAdapter.ContentListener {
     }
 
     private var fragmentBinding: MainFragmentBinding? = null
+    private lateinit var adapter: CoinListAdapter
     private var inc = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
+
         setHasOptionsMenu(true)
         (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         val binding = MainFragmentBinding.inflate(layoutInflater, container, false)
 
-        val adapter = CoinListAdapter(this.requireContext(), this)
+        adapter = CoinListAdapter(this.requireContext(), this)
+
+        binding.recyclerview.setHasFixedSize(true)
         binding.recyclerview.adapter = adapter
         binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
 
-        viewModel.items.observe(this.requireActivity(), { coins ->
-            coins?.let { adapter.setCoins(it) }
+        viewModel.items.observe(viewLifecycleOwner, { coins ->
+            coins?.let {
+                adapter.setCoins(it)
+                adapter.notifyDataSetChanged()
+            }
         })
 
         fragmentBinding = binding

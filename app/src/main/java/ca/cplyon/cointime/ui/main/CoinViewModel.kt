@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 class CoinViewModel(private val repository: CoinRepository ) : ViewModel() {
 
     private var _items: LiveData<List<Coin>> =
-        repository.observeCoins().switchMap { filterTasks(it) }
+        repository.observeCoins().switchMap { filterCoins(it) }
     val items: LiveData<List<Coin>> = _items
 
     /**
@@ -25,8 +25,7 @@ class CoinViewModel(private val repository: CoinRepository ) : ViewModel() {
         repository.deleteCoin(coin)
     }
 
-
-    private fun filterTasks(coinResult: Result<List<Coin>>): LiveData<List<Coin>> {
+    private fun filterCoins(coinResult: Result<List<Coin>>): LiveData<List<Coin>> {
         val result = MutableLiveData<List<Coin>>()
         if (coinResult is Success) {
             viewModelScope.launch {
@@ -35,9 +34,9 @@ class CoinViewModel(private val repository: CoinRepository ) : ViewModel() {
         } else {
             result.value = emptyList()
         }
+
         return result
     }
-
 
 }
 

@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import ca.cplyon.cointime.R
 import ca.cplyon.cointime.data.Coin
 import ca.cplyon.cointime.databinding.RecyclerviewItemBinding
 import kotlinx.android.synthetic.main.recyclerview_item.view.*
+import java.util.*
 
 class CoinListAdapter internal constructor(
     context: Context,
@@ -15,7 +17,7 @@ class CoinListAdapter internal constructor(
 ) : RecyclerView.Adapter<CoinListAdapter.CoinViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var coins = mutableListOf<Coin>()
+    private var coins = Collections.emptyList<Coin>()
     lateinit var binding: RecyclerviewItemBinding
 
     init {
@@ -26,30 +28,34 @@ class CoinListAdapter internal constructor(
         fun onItemClicked(coin: Coin?)
     }
 
-    inner class CoinViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(
-            itemView
-        ) {
-        val coinItemView = binding.listItem
-        var currentCoin: Coin? = null
+    inner class CoinViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val coinItemView = binding.listItem
+        private lateinit var currentCoin: Coin
+
+        fun bind(coin: Coin) {
+            currentCoin = coin
+
+            // update list view item
+            coinItemView.country.text = currentCoin.country
+            coinItemView.details.text = buildString {
+                append(currentCoin.denomination)
+                append(" ")
+                append(currentCoin.year)
+                append(currentCoin.mintMark)
+            }
+
+        }
     }
 
     override fun onBindViewHolder(holder: CoinViewHolder, position: Int) {
+        // get currently selected coin based on its position in the RecyclerView
         val currentCoin = coins[position]
-        holder.coinItemView.country.text = currentCoin.country
-        val detailString = buildString {
-            append(currentCoin.denomination)
-            append(" ")
-            append(currentCoin.year)
-            append(currentCoin.mintMark)
-        }
-        holder.coinItemView.details.text = detailString
-        holder.currentCoin = currentCoin
+        holder.bind(currentCoin)
 
+        // delegate onClick to a ContentListener
         binding.listItem.setOnClickListener {
             listener.onItemClicked(currentCoin)
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinViewHolder {
@@ -58,9 +64,17 @@ class CoinListAdapter internal constructor(
     }
 
     internal fun setCoins(coins: List<Coin>) {
-        this.coins = coins.toMutableList()
-        notifyDataSetChanged()
+        this.coins = coins
     }
 
     override fun getItemCount() = coins.size
+
+    override fun getItemViewType(position: Int): Int {
+        return R.layout.recyclerview_item
+    }
+
+    override fun getItemId(position: Int): Long {
+        return coins[position].coinId.toLong()
+    }
+
 }
