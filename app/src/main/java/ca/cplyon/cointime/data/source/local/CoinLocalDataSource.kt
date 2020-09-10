@@ -38,4 +38,8 @@ class CoinLocalDataSource internal constructor(
         coinDao.deleteCoin(coin)
     }
 
+    override suspend fun updateCoin(coin: Coin) = withContext(ioDispatcher) {
+        coinDao.updateCoin(coin)
+    }
+
 }

@@ -7,11 +7,11 @@ import java.io.Serializable
 
 @Entity(tableName = "coin_table")
 data class Coin(
-    @ColumnInfo(name = "Country") val country: String,
-    @ColumnInfo(name = "Denomination") val denomination: String,
-    @ColumnInfo(name = "Year") val year: Int,
-    @ColumnInfo(name = "MintMark") val mintMark: String,
-    @ColumnInfo(name = "Notes") val notes: String
+    @ColumnInfo(name = "Country") var country: String,
+    @ColumnInfo(name = "Denomination") var denomination: String,
+    @ColumnInfo(name = "Year") var year: Int,
+    @ColumnInfo(name = "MintMark") var mintMark: String,
+    @ColumnInfo(name = "Notes") var notes: String
 ) : Serializable {
     @PrimaryKey(autoGenerate = true)
     var coinId: Int = 0

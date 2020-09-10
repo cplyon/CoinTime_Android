@@ -25,6 +25,10 @@ class CoinViewModel(private val repository: CoinRepository ) : ViewModel() {
         repository.deleteCoin(coin)
     }
 
+    fun updateCoin(coin: Coin) = viewModelScope.launch(Dispatchers.IO) {
+        repository.updateCoin(coin)
+    }
+
     private fun filterCoins(coinResult: Result<List<Coin>>): LiveData<List<Coin>> {
         val result = MutableLiveData<List<Coin>>()
         if (coinResult is Success) {

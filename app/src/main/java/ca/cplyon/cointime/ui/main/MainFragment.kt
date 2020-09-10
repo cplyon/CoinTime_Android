@@ -25,7 +25,6 @@ class MainFragment : Fragment(), CoinListAdapter.ContentListener {
 
     private var fragmentBinding: MainFragmentBinding? = null
     private lateinit var adapter: CoinListAdapter
-    private var inc = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -78,18 +77,14 @@ class MainFragment : Fragment(), CoinListAdapter.ContentListener {
         super.onActivityCreated(savedInstanceState)
 
         fragmentBinding?.addCoinFab?.setOnClickListener {
-
-            // TODO: delete this code
-            viewModel.addCoin(Coin("Canada", "10 cents", 1990 + inc, "", "Hi"))
-            inc++
-
-            // open new Coin fragment
+            // open Coin Detail Fragment with blank values
             (context as MainActivity).launchDetailFragment(null, "new_coin")
         }
 
     }
 
     override fun onItemClicked(coin: Coin?) {
+        // open Coin Detail Fragment with populated values
         (context as MainActivity).launchDetailFragment(coin, "detail_coin")
     }
 

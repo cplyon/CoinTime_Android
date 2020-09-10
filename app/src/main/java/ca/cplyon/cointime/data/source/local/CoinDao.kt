@@ -19,4 +19,7 @@ interface CoinDao {
 
     @Delete()
     suspend fun deleteCoin(coin: Coin)
+
+    @Update()
+    suspend fun updateCoin(coin: Coin)
 }

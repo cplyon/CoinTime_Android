@@ -27,4 +27,8 @@ class CoinRepository(
     suspend fun deleteCoin(coin: Coin) {
         localDataSource.deleteCoin(coin)
     }
+
+    suspend fun updateCoin(coin: Coin) {
+        localDataSource.updateCoin(coin)
+    }
 }

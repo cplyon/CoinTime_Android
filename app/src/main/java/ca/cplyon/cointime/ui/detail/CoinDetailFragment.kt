@@ -26,6 +26,7 @@ class CoinDetailFragment : Fragment() {
     private lateinit var deleteButton: MenuItem
     private lateinit var editButton: MenuItem
     private lateinit var saveButton: MenuItem
+    private lateinit var binding: DetailFragmentBinding
     private var editMode = false
 
     private val viewModel by activityViewModels<CoinViewModel> {
@@ -47,7 +48,7 @@ class CoinDetailFragment : Fragment() {
 
         (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val binding = DetailFragmentBinding.inflate(layoutInflater, container, false)
+        binding = DetailFragmentBinding.inflate(layoutInflater, container, false)
 
         val c = coin
         if (c != null) {
@@ -96,6 +97,26 @@ class CoinDetailFragment : Fragment() {
 
         R.id.action_save -> {
             setEditMode(false)
+            val c = coin
+            if (c != null) {
+                c.country = binding.coinCountry.text.toString()
+                c.denomination = binding.coinDenomination.text.toString()
+                c.year = binding.coinYear.text.toString().toInt()
+                c.mintMark = binding.coinMintMark.text.toString()
+                c.notes = binding.coinNotes.text.toString()
+                viewModel.updateCoin(c)
+            } else {
+                // no coin selected, so create a new one
+                viewModel.addCoin(
+                    Coin(
+                        binding.coinCountry.text.toString(),
+                        binding.coinDenomination.text.toString(),
+                        binding.coinYear.text.toString().toInt(),
+                        binding.coinMintMark.text.toString(),
+                        binding.coinNotes.text.toString()
+                    )
+                )
+            }
             true
         }
 
