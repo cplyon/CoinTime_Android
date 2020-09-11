@@ -108,8 +108,21 @@ class CoinDetailFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_delete -> {
+
+            // TODO: properly handle the case where new coin is created, saved, then immediately deleted
+
             val c = coin
             if (c != null) {
+
+                if (c.obverse != null) {
+                    val file = File(c.obverse)
+                    file.delete()
+                }
+                if (c.reverse != null) {
+                    val file = File(c.reverse)
+                    file.delete()
+                }
+
                 viewModel.deleteCoin(c)
                 (context as MainActivity).onBackPressed()
             }
