@@ -80,7 +80,7 @@ class CoinDetailFragment : Fragment() {
     }
 
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_delete -> {
             val c = coin
             if (c != null) {
@@ -97,11 +97,13 @@ class CoinDetailFragment : Fragment() {
 
         R.id.action_save -> {
             setEditMode(false)
+            val yearText = binding.coinYear.text.toString()
+            val year = if (yearText.isBlank()) 0 else yearText.toInt()
             val c = coin
             if (c != null) {
                 c.country = binding.coinCountry.text.toString()
                 c.denomination = binding.coinDenomination.text.toString()
-                c.year = binding.coinYear.text.toString().toInt()
+                c.year = year
                 c.mintMark = binding.coinMintMark.text.toString()
                 c.notes = binding.coinNotes.text.toString()
                 viewModel.updateCoin(c)
@@ -111,7 +113,7 @@ class CoinDetailFragment : Fragment() {
                     Coin(
                         binding.coinCountry.text.toString(),
                         binding.coinDenomination.text.toString(),
-                        binding.coinYear.text.toString().toInt(),
+                        year,
                         binding.coinMintMark.text.toString(),
                         binding.coinNotes.text.toString()
                     )
