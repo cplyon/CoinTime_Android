@@ -16,6 +16,12 @@ data class Coin(
     @PrimaryKey(autoGenerate = true)
     var coinId: Int = 0
 
+    @ColumnInfo(name = "Obverse")
+    var obverse: String? = null
+
+    @ColumnInfo(name = "Reverse")
+    var reverse: String? = null
+
     override fun toString(): String {
         return buildString {
             append(country)

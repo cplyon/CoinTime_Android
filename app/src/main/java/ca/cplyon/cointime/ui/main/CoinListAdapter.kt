@@ -1,6 +1,7 @@
 package ca.cplyon.cointime.ui.main
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +40,9 @@ class CoinListAdapter internal constructor(
             currentCoin = coin
 
             // update list view item
+            if (currentCoin.obverse != null) {
+                coinItemView.coin_image.setImageBitmap(BitmapFactory.decodeFile(currentCoin.obverse))
+            }
             coinItemView.country.text = currentCoin.country
             coinItemView.details.text = buildString {
                 append(currentCoin.denomination)

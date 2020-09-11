@@ -1,6 +1,13 @@
 package ca.cplyon.cointime.ui.detail
 
+import android.app.Activity.RESULT_OK
+import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -11,6 +18,13 @@ import ca.cplyon.cointime.data.Coin
 import ca.cplyon.cointime.databinding.DetailFragmentBinding
 import ca.cplyon.cointime.ui.main.CoinViewModel
 import ca.cplyon.cointime.ui.main.CoinViewModelFactory
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.nio.file.Paths
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 const val ARG_PARAM1 = "coin"
@@ -21,6 +35,11 @@ const val ARG_PARAM1 = "coin"
  * create an instance of this fragment.
  */
 class CoinDetailFragment : Fragment() {
+
+    private var obverseUpdated = false
+    private var reverseUpdated = false
+
+
     private var coin: Coin? = null
     private var fragmentBinding: DetailFragmentBinding? = null
     private lateinit var deleteButton: MenuItem
@@ -45,10 +64,11 @@ class CoinDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         binding = DetailFragmentBinding.inflate(layoutInflater, container, false)
+
+        binding.obverse.setOnClickListener { if (editMode) takePhoto(OBVERSE_IMAGE_CAPTURE) }
+        binding.reverse.setOnClickListener { if (editMode) takePhoto(REVERSE_IMAGE_CAPTURE) }
 
         val c = coin
         if (c != null) {
@@ -57,6 +77,13 @@ class CoinDetailFragment : Fragment() {
             binding.coinYear.setText(c.year.toString())
             binding.coinMintMark.setText(c.mintMark)
             binding.coinNotes.setText(c.notes)
+            if (c.obverse != null) {
+                binding.obverse.setImageBitmap(BitmapFactory.decodeFile(c.obverse))
+            }
+            if (c.reverse != null) {
+                binding.reverse.setImageBitmap(BitmapFactory.decodeFile(c.reverse))
+            }
+
         } else {
             editMode = true
         }
@@ -79,7 +106,6 @@ class CoinDetailFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_delete -> {
             val c = coin
@@ -99,26 +125,49 @@ class CoinDetailFragment : Fragment() {
             setEditMode(false)
             val yearText = binding.coinYear.text.toString()
             val year = if (yearText.isBlank()) 0 else yearText.toInt()
-            val c = coin
+            var obversePath: String? = null
+            var reversePath: String? = null
+
+            if (obverseUpdated) {
+                obversePath =
+                    saveImage((binding.obverse.drawable as BitmapDrawable).bitmap, "obverse")
+            }
+            if (reverseUpdated) {
+                reversePath =
+                    saveImage((binding.reverse.drawable as BitmapDrawable).bitmap, "reverse")
+            }
+
+            var c = coin
             if (c != null) {
+                // update current coin
                 c.country = binding.coinCountry.text.toString()
                 c.denomination = binding.coinDenomination.text.toString()
                 c.year = year
                 c.mintMark = binding.coinMintMark.text.toString()
                 c.notes = binding.coinNotes.text.toString()
+                if (obverseUpdated) {
+                    c.obverse = obversePath
+                }
+                if (reverseUpdated) {
+                    c.reverse = reversePath
+                }
                 viewModel.updateCoin(c)
             } else {
-                // no coin selected, so create a new one
-                viewModel.addCoin(
-                    Coin(
-                        binding.coinCountry.text.toString(),
-                        binding.coinDenomination.text.toString(),
-                        year,
-                        binding.coinMintMark.text.toString(),
-                        binding.coinNotes.text.toString()
-                    )
+                // create a new coin
+                c = Coin(
+                    binding.coinCountry.text.toString(),
+                    binding.coinDenomination.text.toString(),
+                    year,
+                    binding.coinMintMark.text.toString(),
+                    binding.coinNotes.text.toString()
                 )
+                c.obverse = obversePath
+                c.reverse = reversePath
+                viewModel.addCoin(c)
+                coin = c
             }
+            obverseUpdated = false
+            reverseUpdated = false
             true
         }
 
@@ -127,8 +176,26 @@ class CoinDetailFragment : Fragment() {
         }
     }
 
-    private fun setEditMode(enabled: Boolean) {
+    private fun saveImage(image: Bitmap, suffix: String): String? {
+        val storageDir: File? = requireContext().getDir("coin_images", Context.MODE_PRIVATE)
+        val filename: String =
+            SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date()) + "_$suffix.png"
+        val path = Paths.get(storageDir.toString(), filename)
+        try {
+            FileOutputStream(path.toFile()).use { out ->
+                image.compress(
+                    Bitmap.CompressFormat.PNG,
+                    100,
+                    out
+                )
+            }
+        } catch (e: IOException) {
+            return null
+        }
+        return path.toString()
+    }
 
+    private fun setEditMode(enabled: Boolean) {
         // hide/disable these controls in edit mode
         editButton.isVisible = !enabled
         deleteButton.isEnabled = !enabled
@@ -146,7 +213,32 @@ class CoinDetailFragment : Fragment() {
 
     }
 
+    private fun takePhoto(requestCode: Int) {
+        startActivityForResult(
+            Intent(MediaStore.ACTION_IMAGE_CAPTURE),
+            requestCode
+        )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == OBVERSE_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            val bitmap = data?.extras?.get("data") as Bitmap
+            binding.obverse.setImageBitmap(bitmap)
+            obverseUpdated = true
+        } else if (requestCode == REVERSE_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            val bitmap = data?.extras?.get("data") as Bitmap
+            binding.reverse.setImageBitmap(bitmap)
+            reverseUpdated = true
+        }
+    }
+
+
     companion object {
+
+        const val OBVERSE_IMAGE_CAPTURE = 1
+        const val REVERSE_IMAGE_CAPTURE = 2
+
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.

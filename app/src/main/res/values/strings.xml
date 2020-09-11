@@ -12,4 +12,5 @@
     <string name="mint_mark">Mint Mark</string>
     <string name="notes">Notes</string>
     <string name="obverse">Obverse</string>
+    <string name="reverse">Reverse</string>
 </resources>
