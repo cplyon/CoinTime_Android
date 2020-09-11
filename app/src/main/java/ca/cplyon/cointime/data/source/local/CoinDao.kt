@@ -17,9 +17,9 @@ interface CoinDao {
     @Query("SELECT * FROM coin_table")
     fun observeCoins(): LiveData<List<Coin>>
 
-    @Delete()
+    @Delete
     suspend fun deleteCoin(coin: Coin)
 
-    @Update()
+    @Update
     suspend fun updateCoin(coin: Coin)
 }

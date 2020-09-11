@@ -11,4 +11,5 @@
     <string name="year">Year</string>
     <string name="mint_mark">Mint Mark</string>
     <string name="notes">Notes</string>
+    <string name="obverse">Obverse</string>
 </resources>
