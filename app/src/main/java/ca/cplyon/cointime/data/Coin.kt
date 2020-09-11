@@ -15,4 +15,18 @@ data class Coin(
 ) : Serializable {
     @PrimaryKey(autoGenerate = true)
     var coinId: Int = 0
+
+    override fun toString(): String {
+        return buildString {
+            append(country)
+            append(" ")
+            append(denomination)
+            append(" ")
+            append(year)
+            append(" ")
+            append(mintMark)
+            append(" ")
+            append(notes)
+        }
+    }
 }

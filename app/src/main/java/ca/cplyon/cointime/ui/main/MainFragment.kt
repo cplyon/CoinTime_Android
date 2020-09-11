@@ -66,6 +66,7 @@ class MainFragment : Fragment(), CoinListAdapter.ContentListener {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
+                adapter.filter.filter(newText)
                 return false
             }
         })
