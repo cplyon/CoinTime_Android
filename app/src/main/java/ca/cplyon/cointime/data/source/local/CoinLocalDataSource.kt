@@ -24,8 +24,8 @@ class CoinLocalDataSource internal constructor(
         }
     }
 
-    override suspend fun addCoin(coin: Coin) = withContext(ioDispatcher) {
-        coinDao.addCoin(coin)
+    override suspend fun addCoin(coin: Coin): Long = withContext(ioDispatcher) {
+        return@withContext coinDao.addCoin(coin)
     }
 
     override fun observeCoins(): LiveData<Result<List<Coin>>> {

@@ -14,7 +14,7 @@ data class Coin(
     @ColumnInfo(name = "Notes") var notes: String
 ) : Serializable {
     @PrimaryKey(autoGenerate = true)
-    var coinId: Int = 0
+    var coinId: Long = 0
 
     @ColumnInfo(name = "Obverse")
     var obverse: String? = null

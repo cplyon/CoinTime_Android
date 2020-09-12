@@ -16,8 +16,8 @@ class CoinRepository(
         return localDataSource.getAllCoins()
     }
 
-    suspend fun addCoin(coin: Coin) {
-        localDataSource.addCoin(coin)
+    suspend fun addCoin(coin: Coin): Long {
+        return localDataSource.addCoin(coin)
     }
 
     fun observeCoins(): LiveData<Result<List<Coin>>> {

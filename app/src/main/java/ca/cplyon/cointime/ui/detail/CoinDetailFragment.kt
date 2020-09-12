@@ -93,6 +93,7 @@ class CoinDetailFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        viewModel.lastCoinId = 0L
         fragmentBinding = null
         super.onDestroyView()
     }
@@ -109,17 +110,15 @@ class CoinDetailFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_delete -> {
 
-            // TODO: properly handle the case where new coin is created, saved, then immediately deleted
-
             val c = coin
             if (c != null) {
 
                 if (c.obverse != null) {
-                    val file = File(c.obverse)
+                    val file = File(c.obverse!!)
                     file.delete()
                 }
                 if (c.reverse != null) {
-                    val file = File(c.reverse)
+                    val file = File(c.reverse!!)
                     file.delete()
                 }
 
@@ -177,6 +176,14 @@ class CoinDetailFragment : Fragment() {
                 c.obverse = obversePath
                 c.reverse = reversePath
                 viewModel.addCoin(c)
+
+                // The id for a new coin is 0 until it is entered into the database, where the id is
+                // changed to be unique and set in viewModel.lastCoinId. So if we try to delete a
+                // coin from this fragment instance, we don't know the id yet, and so are unable to
+                // delete it until we relaunch the listview and refetch it from the database.
+                if (viewModel.lastCoinId != 0L) {
+                    c.coinId = viewModel.lastCoinId
+                }
                 coin = c
             }
             obverseUpdated = false

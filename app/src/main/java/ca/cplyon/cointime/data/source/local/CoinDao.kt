@@ -12,7 +12,7 @@ interface CoinDao {
     suspend fun getAllCoins(): List<Coin>
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun addCoin(coin: Coin)
+    suspend fun addCoin(coin: Coin): Long
 
     @Query("SELECT * FROM coin_table")
     fun observeCoins(): LiveData<List<Coin>>
