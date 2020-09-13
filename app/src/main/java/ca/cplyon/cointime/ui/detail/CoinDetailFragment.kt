@@ -18,6 +18,7 @@ import ca.cplyon.cointime.data.Coin
 import ca.cplyon.cointime.databinding.DetailFragmentBinding
 import ca.cplyon.cointime.ui.main.CoinViewModel
 import ca.cplyon.cointime.ui.main.CoinViewModelFactory
+import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -163,7 +164,12 @@ class CoinDetailFragment : Fragment() {
                 if (reverseUpdated) {
                     c.reverse = reversePath
                 }
-                viewModel.updateCoin(c)
+
+                // synchronize due to race condition setting lastCoinId.
+                // TODO: There's got to be a better way!
+                runBlocking {
+                    viewModel.updateCoin(c!!).join()
+                }
             } else {
                 // create a new coin
                 c = Coin(
@@ -175,7 +181,12 @@ class CoinDetailFragment : Fragment() {
                 )
                 c.obverse = obversePath
                 c.reverse = reversePath
-                viewModel.addCoin(c)
+
+                // synchronize due to race condition setting lastCoinId.
+                // TODO: There's got to be a better way!
+                runBlocking {
+                    viewModel.addCoin(c).join()
+                }
 
                 // The id for a new coin is 0 until it is entered into the database, where the id is
                 // changed to be unique and set in viewModel.lastCoinId. So if we try to delete a
@@ -184,8 +195,8 @@ class CoinDetailFragment : Fragment() {
                 if (viewModel.lastCoinId != 0L) {
                     c.coinId = viewModel.lastCoinId
                 }
-                coin = c
             }
+            coin = c
             obverseUpdated = false
             reverseUpdated = false
             true
