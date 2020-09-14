@@ -1,7 +1,6 @@
 package ca.cplyon.cointime
 
 import android.content.Context
-import androidx.room.Room
 import ca.cplyon.cointime.data.source.CoinRepository
 import ca.cplyon.cointime.data.source.local.CoinLocalDataSource
 import ca.cplyon.cointime.data.source.local.CoinRoomDatabase
@@ -27,11 +26,7 @@ object ServiceLocator {
     }
 
     private fun createDatabase(context: Context) : CoinRoomDatabase {
-        val result = Room.databaseBuilder(
-            context.applicationContext,
-            CoinRoomDatabase::class.java,
-            "Coins.db"
-        ).build()
+        val result = CoinRoomDatabase.getDatabase(context)
         database = result
         return result
     }

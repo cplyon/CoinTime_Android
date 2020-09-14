@@ -27,9 +27,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-const val ARG_PARAM1 = "coin"
-
 /**
  * A simple [Fragment] subclass.
  * Use the [CoinDetailFragment.newInstance] factory method to
@@ -39,7 +36,6 @@ class CoinDetailFragment : Fragment() {
 
     private var obverseUpdated = false
     private var reverseUpdated = false
-
 
     private var coin: Coin? = null
     private var fragmentBinding: DetailFragmentBinding? = null
@@ -100,6 +96,7 @@ class CoinDetailFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+
         inflater.inflate(R.menu.detail_menu, menu)
         deleteButton = menu.findItem(R.id.action_delete)
         editButton = menu.findItem(R.id.action_edit)
@@ -138,16 +135,17 @@ class CoinDetailFragment : Fragment() {
             setEditMode(false)
             val yearText = binding.coinYear.text.toString()
             val year = if (yearText.isBlank()) 0 else yearText.toInt()
-            var obversePath: String? = null
-            var reversePath: String? = null
 
-            if (obverseUpdated) {
-                obversePath =
-                    saveImage((binding.obverse.drawable as BitmapDrawable).bitmap, "obverse")
+            val obversePath = if (obverseUpdated) {
+                saveImage((binding.obverse.drawable as BitmapDrawable).bitmap, "obverse")
+            } else {
+                null
             }
-            if (reverseUpdated) {
-                reversePath =
-                    saveImage((binding.reverse.drawable as BitmapDrawable).bitmap, "reverse")
+
+            val reversePath = if (reverseUpdated) {
+                saveImage((binding.reverse.drawable as BitmapDrawable).bitmap, "reverse")
+            } else {
+                null
             }
 
             var c = coin
@@ -196,6 +194,7 @@ class CoinDetailFragment : Fragment() {
                     c.coinId = viewModel.lastCoinId
                 }
             }
+
             coin = c
             obverseUpdated = false
             reverseUpdated = false
@@ -227,12 +226,13 @@ class CoinDetailFragment : Fragment() {
     }
 
     private fun setEditMode(enabled: Boolean) {
+        editMode = enabled
+
         // hide/disable these controls in edit mode
         editButton.isVisible = !enabled
         deleteButton.isEnabled = !enabled
 
         // show/enable these controls in edit mode
-        editMode = enabled
         saveButton.isVisible = enabled
         fragmentBinding?.let {
             it.coinCountry.isEnabled = enabled
@@ -269,6 +269,9 @@ class CoinDetailFragment : Fragment() {
 
         const val OBVERSE_IMAGE_CAPTURE = 1
         const val REVERSE_IMAGE_CAPTURE = 2
+
+        // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+        const val ARG_PARAM1 = "coin"
 
         /**
          * Use this factory method to create a new instance of

@@ -31,7 +31,7 @@ abstract class CoinRoomDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     CoinRoomDatabase::class.java,
-                    "coin_database"
+                    "Coins.db"
                 ).build()
                 INSTANCE = instance
                 return instance

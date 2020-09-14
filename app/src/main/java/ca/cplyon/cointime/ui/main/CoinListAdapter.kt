@@ -82,7 +82,7 @@ class CoinListAdapter internal constructor(
     }
 
     override fun getItemId(position: Int): Long {
-        return coins[position].coinId.toLong()
+        return coins[position].coinId
     }
 
     override fun getFilter(): Filter {
