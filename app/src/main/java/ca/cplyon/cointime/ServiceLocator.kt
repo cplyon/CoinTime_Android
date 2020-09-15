@@ -2,6 +2,7 @@ package ca.cplyon.cointime
 
 import android.content.Context
 import ca.cplyon.cointime.data.source.CoinRepository
+import ca.cplyon.cointime.data.source.DefaultCoinRepository
 import ca.cplyon.cointime.data.source.local.CoinLocalDataSource
 import ca.cplyon.cointime.data.source.local.CoinRoomDatabase
 
@@ -15,7 +16,7 @@ object ServiceLocator {
     }
 
     private fun createCoinRepository(context: Context) : CoinRepository {
-        val newRepository = CoinRepository(createCoinLocalDataSource(context))
+        val newRepository = DefaultCoinRepository(createCoinLocalDataSource(context))
         coinRepository = newRepository
         return newRepository
     }
