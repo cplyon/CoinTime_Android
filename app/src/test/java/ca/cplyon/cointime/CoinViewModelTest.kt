@@ -5,9 +5,9 @@ import androidx.lifecycle.Observer
 import ca.cplyon.cointime.data.Coin
 import ca.cplyon.cointime.ui.main.CoinViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.CoreMatchers.`is`
+import org.junit.Assert
 import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Rule
@@ -25,18 +25,20 @@ class CoinViewModelUnitTest {
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
+    private val coins = listOf(Coin("Dummy", "Dummy", 0, "Dummy", "Dummy"))
 
     @ExperimentalCoroutinesApi
     @Before
     fun setUpViewModel() {
-        fakeRepository = FakeCoinRepository()
-        vm = CoinViewModel(fakeRepository)
+        fakeRepository = FakeCoinRepository(coins)
     }
 
 
     @ExperimentalCoroutinesApi
     @Test
     fun addCoin_verify_lastCoinId() {
+
+        vm = CoinViewModel(fakeRepository)
 
         val observer = Observer<List<Coin>> {}
 
@@ -47,7 +49,7 @@ class CoinViewModelUnitTest {
             vm.items.observeForever(observer)
             // There's got to be a better way!
             runBlockingTest {
-                vm.addCoin(c)
+                vm.addCoin(c).join()
             }
 
             val id = vm.lastCoinId
@@ -56,6 +58,32 @@ class CoinViewModelUnitTest {
             vm.items.removeObserver(observer)
         }
 
+    }
+
+    @Test
+    fun filterCoins_success() {
+        val observer = Observer<List<Coin>> {}
+        vm = CoinViewModel(fakeRepository)
+        try {
+            vm.items.observeForever(observer)
+            Assert.assertEquals(vm.items.value, coins)
+        } finally {
+            vm.items.removeObserver(observer)
+        }
+    }
+
+
+    @Test
+    fun filterCoins_failure() {
+        val observer = Observer<List<Coin>> {}
+        fakeRepository.setReturnError(true)
+        vm = CoinViewModel(fakeRepository)
+        try {
+            vm.items.observeForever(observer)
+            Assert.assertEquals(vm.items.value, emptyList<Coin>())
+        } finally {
+            vm.items.removeObserver(observer)
+        }
     }
 
 }
