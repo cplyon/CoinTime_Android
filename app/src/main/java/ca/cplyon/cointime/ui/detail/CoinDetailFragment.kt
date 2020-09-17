@@ -14,8 +14,6 @@ import ca.cplyon.cointime.MainActivity
 import ca.cplyon.cointime.R
 import ca.cplyon.cointime.data.Coin
 import ca.cplyon.cointime.databinding.DetailFragmentBinding
-import ca.cplyon.cointime.ui.main.CoinViewModel
-import ca.cplyon.cointime.ui.main.CoinViewModelFactory
 import kotlinx.coroutines.runBlocking
 
 
@@ -38,8 +36,8 @@ class CoinDetailFragment : Fragment() {
     private lateinit var binding: DetailFragmentBinding
     private var editMode = false
 
-    private val viewModel by activityViewModels<CoinViewModel> {
-        CoinViewModelFactory(
+    private val viewModel by activityViewModels<CoinDetailViewModel> {
+        CoinDetailViewModelFactory(
             (requireContext().applicationContext as CoinTimeApplication).coinRepository,
             requireContext().applicationContext as CoinTimeApplication
         )
@@ -118,13 +116,13 @@ class CoinDetailFragment : Fragment() {
             val year = if (yearText.isBlank()) 0 else yearText.toInt()
 
             val obversePath = if (obverseUpdated) {
-                viewModel.saveImage((binding.obverse.drawable as BitmapDrawable).bitmap)
+                viewModel.saveObverseImage((binding.obverse.drawable as BitmapDrawable).bitmap)
             } else {
                 null
             }
 
             val reversePath = if (reverseUpdated) {
-                viewModel.saveImage((binding.reverse.drawable as BitmapDrawable).bitmap)
+                viewModel.saveReverseImage((binding.reverse.drawable as BitmapDrawable).bitmap)
             } else {
                 null
             }

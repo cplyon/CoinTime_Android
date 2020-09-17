@@ -1,25 +1,20 @@
-package ca.cplyon.cointime.ui.main
+package ca.cplyon.cointime.ui.detail
 
 import android.app.Application
 import android.graphics.Bitmap
-import androidx.lifecycle.*
-import ca.cplyon.cointime.CoinTimeApplication
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import ca.cplyon.cointime.data.Coin
-import ca.cplyon.cointime.data.Result
-import ca.cplyon.cointime.data.Result.Success
 import ca.cplyon.cointime.data.source.CoinRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CoinViewModel(private val repository: CoinRepository, application: Application) :
+class CoinDetailViewModel(private val repository: CoinRepository, application: Application) :
     AndroidViewModel(
         application
     ) {
-
-    private var _items: LiveData<List<Coin>> =
-        repository.observeCoins().switchMap { filterCoins(it) }
-    val items: LiveData<List<Coin>> = _items
-
     // the id of the last coin added
     var lastCoinId: Long = 0
 
@@ -40,36 +35,26 @@ class CoinViewModel(private val repository: CoinRepository, application: Applica
         repository.updateCoin(coin)
     }
 
-    fun saveImage(image: Bitmap): String? {
-        val context = this.getApplication<CoinTimeApplication>().applicationContext
-        return repository.saveImage(context, image)
+    fun saveObverseImage(image: Bitmap): String? {
+        return repository.saveImage(getApplication(), image, "_obverse")
+    }
+
+    fun saveReverseImage(image: Bitmap): String? {
+        return repository.saveImage(getApplication(), image, "_reverse")
     }
 
     fun loadImage(path: String): Bitmap {
         return repository.loadImage(path)
     }
 
-    private fun filterCoins(coinResult: Result<List<Coin>>): LiveData<List<Coin>> {
-        val result = MutableLiveData<List<Coin>>()
-        if (coinResult is Success) {
-            viewModelScope.launch {
-                result.value = coinResult.data
-            }
-        } else {
-            result.value = emptyList()
-        }
-
-        return result
-    }
-
 }
 
 
 @Suppress("UNCHECKED_CAST")
-class CoinViewModelFactory(
+class CoinDetailViewModelFactory(
     private val coinRepository: CoinRepository,
     private val application: Application
 ) : ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>) =
-        (CoinViewModel(coinRepository, application) as T)
+        (CoinDetailViewModel(coinRepository, application) as T)
 }

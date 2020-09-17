@@ -10,32 +10,33 @@ import ca.cplyon.cointime.CoinTimeApplication
 import ca.cplyon.cointime.MainActivity
 import ca.cplyon.cointime.R
 import ca.cplyon.cointime.data.Coin
-import ca.cplyon.cointime.databinding.MainFragmentBinding
+import ca.cplyon.cointime.databinding.ListFragmentBinding
 
 
-class MainFragment : Fragment(), CoinListAdapter.ContentListener {
+class CoinListFragment : Fragment(), CoinListAdapter.ContentListener {
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() = CoinListFragment()
     }
 
-    private val viewModel by activityViewModels<CoinViewModel> {
-        CoinViewModelFactory(
-            (requireContext().applicationContext as CoinTimeApplication).coinRepository,
-            requireContext().applicationContext as CoinTimeApplication
+    private val viewModel by activityViewModels<CoinListViewModel> {
+        CoinListViewModelFactory(
+            (requireContext().applicationContext as CoinTimeApplication).coinRepository
         )
     }
 
-    private var fragmentBinding: MainFragmentBinding? = null
+    private var fragmentBinding: ListFragmentBinding? = null
     private lateinit var adapter: CoinListAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         setHasOptionsMenu(true)
         (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
-        val binding = MainFragmentBinding.inflate(layoutInflater, container, false)
+        val binding = ListFragmentBinding.inflate(layoutInflater, container, false)
 
         adapter = CoinListAdapter(this.requireContext(), this)
 

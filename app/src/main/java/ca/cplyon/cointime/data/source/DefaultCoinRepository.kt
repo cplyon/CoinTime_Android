@@ -46,8 +46,8 @@ class DefaultCoinRepository(
         localDataSource.updateCoin(coin)
     }
 
-    override fun saveImage(context: Context, image: Bitmap): String? {
-        val path = generateImagePath(context)
+    override fun saveImage(context: Context, image: Bitmap, suffix: String): String? {
+        val path = generateImagePath(context, suffix)
         try {
             FileOutputStream(path.toFile()).use { out ->
                 image.compress(
@@ -66,10 +66,10 @@ class DefaultCoinRepository(
         return BitmapFactory.decodeFile(path)
     }
 
-    private fun generateImagePath(context: Context): Path {
+    private fun generateImagePath(context: Context, suffix: String): Path {
         val storageDir = context.getDir("coin_images", Context.MODE_PRIVATE)
         val filename =
-            SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date()) + ".png"
+            SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date()) + "_$suffix.png"
         return Paths.get(storageDir.toString(), filename)
     }
 

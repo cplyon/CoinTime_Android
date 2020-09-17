@@ -17,7 +17,7 @@ interface CoinRepository {
 
     suspend fun updateCoin(coin: Coin)
 
-    fun saveImage(context: Context, image: Bitmap): String?
+    fun saveImage(context: Context, image: Bitmap, suffix: String): String?
 
     fun loadImage(path: String): Bitmap
 

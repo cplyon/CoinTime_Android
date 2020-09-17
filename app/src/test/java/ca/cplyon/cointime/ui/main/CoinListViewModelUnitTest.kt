@@ -1,25 +1,23 @@
-package ca.cplyon.cointime
+package ca.cplyon.cointime.ui.main
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import ca.cplyon.cointime.MainCoroutineRule
 import ca.cplyon.cointime.data.Coin
-import ca.cplyon.cointime.ui.main.CoinViewModel
+import ca.cplyon.cointime.data.source.FakeCoinRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
-import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert
-import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class CoinViewModelUnitTest {
+class CoinListViewModelUnitTest {
 
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var fakeRepository: FakeCoinRepository
-    private lateinit var vm: CoinViewModel
+    private lateinit var vm: CoinListViewModel
 
     @ExperimentalCoroutinesApi
     @get:Rule
@@ -33,37 +31,10 @@ class CoinViewModelUnitTest {
         fakeRepository = FakeCoinRepository(coins)
     }
 
-
-    @ExperimentalCoroutinesApi
-    @Test
-    fun addCoin_verify_lastCoinId() {
-
-        vm = CoinViewModel(fakeRepository, FakeCoinTimeApplication())
-
-        val observer = Observer<List<Coin>> {}
-
-        val c = Coin("C", "D", 0, "MM", "N")
-        c.coinId = 191919
-
-        try {
-            vm.items.observeForever(observer)
-            // There's got to be a better way!
-            runBlockingTest {
-                vm.addCoin(c).join()
-            }
-
-            val id = vm.lastCoinId
-            assertThat(id, `is`(191919))
-        } finally {
-            vm.items.removeObserver(observer)
-        }
-
-    }
-
     @Test
     fun filterCoins_success() {
         val observer = Observer<List<Coin>> {}
-        vm = CoinViewModel(fakeRepository, FakeCoinTimeApplication())
+        vm = CoinListViewModel(fakeRepository)
         try {
             vm.items.observeForever(observer)
             Assert.assertEquals(vm.items.value, coins)
@@ -77,7 +48,7 @@ class CoinViewModelUnitTest {
     fun filterCoins_failure() {
         val observer = Observer<List<Coin>> {}
         fakeRepository.setReturnError(true)
-        vm = CoinViewModel(fakeRepository, FakeCoinTimeApplication())
+        vm = CoinListViewModel(fakeRepository)
         try {
             vm.items.observeForever(observer)
             Assert.assertEquals(vm.items.value, emptyList<Coin>())

@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import ca.cplyon.cointime.data.Coin
 import ca.cplyon.cointime.databinding.MainActivityBinding
 import ca.cplyon.cointime.ui.detail.CoinDetailFragment
-import ca.cplyon.cointime.ui.main.MainFragment
+import ca.cplyon.cointime.ui.main.CoinListFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
+                .replace(R.id.container, CoinListFragment.newInstance())
                 .commitNow()
         }
     }
