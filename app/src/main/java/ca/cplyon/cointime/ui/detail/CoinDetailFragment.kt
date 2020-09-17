@@ -1,10 +1,8 @@
 package ca.cplyon.cointime.ui.detail
 
 import android.app.Activity.RESULT_OK
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.provider.MediaStore
@@ -19,12 +17,7 @@ import ca.cplyon.cointime.databinding.DetailFragmentBinding
 import ca.cplyon.cointime.ui.main.CoinViewModel
 import ca.cplyon.cointime.ui.main.CoinViewModelFactory
 import kotlinx.coroutines.runBlocking
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.nio.file.Paths
-import java.text.SimpleDateFormat
-import java.util.*
+
 
 
 /**
@@ -46,7 +39,10 @@ class CoinDetailFragment : Fragment() {
     private var editMode = false
 
     private val viewModel by activityViewModels<CoinViewModel> {
-        CoinViewModelFactory((requireContext().applicationContext as CoinTimeApplication).coinRepository)
+        CoinViewModelFactory(
+            (requireContext().applicationContext as CoinTimeApplication).coinRepository,
+            requireContext().applicationContext as CoinTimeApplication
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,12 +71,11 @@ class CoinDetailFragment : Fragment() {
             binding.coinMintMark.setText(c.mintMark)
             binding.coinNotes.setText(c.notes)
             if (c.obverse != null) {
-                binding.obverse.setImageBitmap(BitmapFactory.decodeFile(c.obverse))
+                binding.obverse.setImageBitmap(viewModel.loadImage(c.obverse!!))
             }
             if (c.reverse != null) {
-                binding.reverse.setImageBitmap(BitmapFactory.decodeFile(c.reverse))
+                binding.reverse.setImageBitmap(viewModel.loadImage(c.reverse!!))
             }
-
         } else {
             editMode = true
         }
@@ -107,22 +102,8 @@ class CoinDetailFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_delete -> {
-
-            val c = coin
-            if (c != null) {
-
-                if (c.obverse != null) {
-                    val file = File(c.obverse!!)
-                    file.delete()
-                }
-                if (c.reverse != null) {
-                    val file = File(c.reverse!!)
-                    file.delete()
-                }
-
-                viewModel.deleteCoin(c)
-                (context as MainActivity).onBackPressed()
-            }
+            viewModel.deleteCoin(coin!!)
+            (context as MainActivity).onBackPressed()
             true
         }
 
@@ -137,13 +118,13 @@ class CoinDetailFragment : Fragment() {
             val year = if (yearText.isBlank()) 0 else yearText.toInt()
 
             val obversePath = if (obverseUpdated) {
-                saveImage((binding.obverse.drawable as BitmapDrawable).bitmap, "obverse")
+                viewModel.saveImage((binding.obverse.drawable as BitmapDrawable).bitmap)
             } else {
                 null
             }
 
             val reversePath = if (reverseUpdated) {
-                saveImage((binding.reverse.drawable as BitmapDrawable).bitmap, "reverse")
+                viewModel.saveImage((binding.reverse.drawable as BitmapDrawable).bitmap)
             } else {
                 null
             }
@@ -204,25 +185,6 @@ class CoinDetailFragment : Fragment() {
         else -> {
             false
         }
-    }
-
-    private fun saveImage(image: Bitmap, suffix: String): String? {
-        val storageDir: File? = requireContext().getDir("coin_images", Context.MODE_PRIVATE)
-        val filename: String =
-            SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date()) + "_$suffix.png"
-        val path = Paths.get(storageDir.toString(), filename)
-        try {
-            FileOutputStream(path.toFile()).use { out ->
-                image.compress(
-                    Bitmap.CompressFormat.PNG,
-                    100,
-                    out
-                )
-            }
-        } catch (e: IOException) {
-            return null
-        }
-        return path.toString()
     }
 
     private fun setEditMode(enabled: Boolean) {

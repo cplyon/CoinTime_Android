@@ -20,7 +20,10 @@ class MainFragment : Fragment(), CoinListAdapter.ContentListener {
     }
 
     private val viewModel by activityViewModels<CoinViewModel> {
-        CoinViewModelFactory((requireContext().applicationContext as CoinTimeApplication).coinRepository)
+        CoinViewModelFactory(
+            (requireContext().applicationContext as CoinTimeApplication).coinRepository,
+            requireContext().applicationContext as CoinTimeApplication
+        )
     }
 
     private var fragmentBinding: MainFragmentBinding? = null

@@ -1,5 +1,7 @@
 package ca.cplyon.cointime
 
+import android.content.Context
+import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ca.cplyon.cointime.data.Coin
@@ -36,6 +38,14 @@ class FakeCoinRepository(coins: List<Coin>) : CoinRepository {
     }
 
     override suspend fun updateCoin(coin: Coin) {
+        TODO("Not yet implemented")
+    }
+
+    override fun saveImage(context: Context, image: Bitmap): String? {
+        TODO("Not yet implemented")
+    }
+
+    override fun loadImage(path: String): Bitmap {
         TODO("Not yet implemented")
     }
 }

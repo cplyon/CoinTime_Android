@@ -38,7 +38,7 @@ class CoinViewModelUnitTest {
     @Test
     fun addCoin_verify_lastCoinId() {
 
-        vm = CoinViewModel(fakeRepository)
+        vm = CoinViewModel(fakeRepository, FakeCoinTimeApplication())
 
         val observer = Observer<List<Coin>> {}
 
@@ -63,7 +63,7 @@ class CoinViewModelUnitTest {
     @Test
     fun filterCoins_success() {
         val observer = Observer<List<Coin>> {}
-        vm = CoinViewModel(fakeRepository)
+        vm = CoinViewModel(fakeRepository, FakeCoinTimeApplication())
         try {
             vm.items.observeForever(observer)
             Assert.assertEquals(vm.items.value, coins)
@@ -77,7 +77,7 @@ class CoinViewModelUnitTest {
     fun filterCoins_failure() {
         val observer = Observer<List<Coin>> {}
         fakeRepository.setReturnError(true)
-        vm = CoinViewModel(fakeRepository)
+        vm = CoinViewModel(fakeRepository, FakeCoinTimeApplication())
         try {
             vm.items.observeForever(observer)
             Assert.assertEquals(vm.items.value, emptyList<Coin>())

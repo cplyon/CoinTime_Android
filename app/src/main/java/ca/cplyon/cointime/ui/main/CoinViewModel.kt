@@ -1,6 +1,9 @@
 package ca.cplyon.cointime.ui.main
 
+import android.app.Application
+import android.graphics.Bitmap
 import androidx.lifecycle.*
+import ca.cplyon.cointime.CoinTimeApplication
 import ca.cplyon.cointime.data.Coin
 import ca.cplyon.cointime.data.Result
 import ca.cplyon.cointime.data.Result.Success
@@ -8,7 +11,10 @@ import ca.cplyon.cointime.data.source.CoinRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CoinViewModel(private val repository: CoinRepository ) : ViewModel() {
+class CoinViewModel(private val repository: CoinRepository, application: Application) :
+    AndroidViewModel(
+        application
+    ) {
 
     private var _items: LiveData<List<Coin>> =
         repository.observeCoins().switchMap { filterCoins(it) }
@@ -34,6 +40,15 @@ class CoinViewModel(private val repository: CoinRepository ) : ViewModel() {
         repository.updateCoin(coin)
     }
 
+    fun saveImage(image: Bitmap): String? {
+        val context = this.getApplication<CoinTimeApplication>().applicationContext
+        return repository.saveImage(context, image)
+    }
+
+    fun loadImage(path: String): Bitmap {
+        return repository.loadImage(path)
+    }
+
     private fun filterCoins(coinResult: Result<List<Coin>>): LiveData<List<Coin>> {
         val result = MutableLiveData<List<Coin>>()
         if (coinResult is Success) {
@@ -51,6 +66,10 @@ class CoinViewModel(private val repository: CoinRepository ) : ViewModel() {
 
 
 @Suppress("UNCHECKED_CAST")
-class CoinViewModelFactory (private val coinRepository: CoinRepository) : ViewModelProvider.NewInstanceFactory() {
-    override fun <T : ViewModel> create(modelClass: Class<T>) = (CoinViewModel(coinRepository) as T)
+class CoinViewModelFactory(
+    private val coinRepository: CoinRepository,
+    private val application: Application
+) : ViewModelProvider.NewInstanceFactory() {
+    override fun <T : ViewModel> create(modelClass: Class<T>) =
+        (CoinViewModel(coinRepository, application) as T)
 }
