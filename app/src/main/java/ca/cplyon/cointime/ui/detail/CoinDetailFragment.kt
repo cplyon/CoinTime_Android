@@ -62,10 +62,12 @@ class CoinDetailFragment : Fragment() {
             binding.coinMintMark.setText(c.mintMark)
             binding.coinNotes.setText(c.notes)
             if (c.obverse != null) {
-                binding.obverse.setImageBitmap(viewModel.loadImage(c.obverse!!))
+                val drawable = BitmapDrawable(resources, viewModel.loadImage(c.obverse!!))
+                binding.obverse.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
             }
             if (c.reverse != null) {
-                binding.reverse.setImageBitmap(viewModel.loadImage(c.reverse!!))
+                val drawable = BitmapDrawable(resources, viewModel.loadImage(c.reverse!!))
+                binding.obverse.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
             }
         } else {
             editMode = true
@@ -109,13 +111,13 @@ class CoinDetailFragment : Fragment() {
             val year = if (yearText.isBlank()) 0 else yearText.toInt()
 
             val obversePath = if (obverseUpdated) {
-                viewModel.saveObverseImage((binding.obverse.drawable as BitmapDrawable).bitmap)
+                viewModel.saveObverseImage((binding.obverse.compoundDrawables[1] as BitmapDrawable).bitmap)
             } else {
                 null
             }
 
             val reversePath = if (reverseUpdated) {
-                viewModel.saveReverseImage((binding.reverse.drawable as BitmapDrawable).bitmap)
+                viewModel.saveReverseImage((binding.reverse.compoundDrawables[1] as BitmapDrawable).bitmap)
             } else {
                 null
             }
@@ -207,11 +209,21 @@ class CoinDetailFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == OBVERSE_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             val bitmap = data?.extras?.get("data") as Bitmap
-            binding.obverse.setImageBitmap(bitmap)
+            binding.obverse.setCompoundDrawablesWithIntrinsicBounds(
+                null,
+                BitmapDrawable(resources, bitmap),
+                null,
+                null
+            )
             obverseUpdated = true
         } else if (requestCode == REVERSE_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             val bitmap = data?.extras?.get("data") as Bitmap
-            binding.reverse.setImageBitmap(bitmap)
+            binding.obverse.setCompoundDrawablesWithIntrinsicBounds(
+                null,
+                BitmapDrawable(resources, bitmap),
+                null,
+                null
+            )
             reverseUpdated = true
         }
     }
