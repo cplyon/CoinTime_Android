@@ -28,10 +28,6 @@
             app:argType="ca.cplyon.cointime.data.Coin"
             app:nullable="true" />
 
-        <action
-            android:id="@+id/next_action"
-            app:popUpTo="@id/list_dest" />
-
     </fragment>
 
 </navigation>
