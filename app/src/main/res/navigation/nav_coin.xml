@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_coin"
+    app:startDestination="@id/list_dest">
+
+
+    <fragment
+        android:id="@+id/list_dest"
+        android:name="ca.cplyon.cointime.ui.main.CoinListFragment"
+        android:label="Coin List"
+        tools:layout="@layout/list_fragment">
+
+        <action
+            android:id="@+id/next_action"
+            app:destination="@id/detail_dest" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detail_dest"
+        android:name="ca.cplyon.cointime.ui.detail.CoinDetailFragment"
+        tools:layout="@layout/detail_fragment">
+
+        <argument
+            android:name="coin"
+            android:defaultValue="@null"
+            app:argType="ca.cplyon.cointime.data.Coin"
+            app:nullable="true" />
+
+        <action
+            android:id="@+id/next_action"
+            app:popUpTo="@id/list_dest" />
+
+    </fragment>
+
+</navigation>

@@ -9,6 +9,7 @@ import android.provider.MediaStore
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.navArgs
 import ca.cplyon.cointime.CoinTimeApplication
 import ca.cplyon.cointime.MainActivity
 import ca.cplyon.cointime.R
@@ -16,13 +17,6 @@ import ca.cplyon.cointime.data.Coin
 import ca.cplyon.cointime.databinding.DetailFragmentBinding
 import kotlinx.coroutines.runBlocking
 
-
-
-/**
- * A simple [Fragment] subclass.
- * Use the [CoinDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class CoinDetailFragment : Fragment() {
 
     private var obverseUpdated = false
@@ -45,9 +39,8 @@ class CoinDetailFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            coin = it.getSerializable(ARG_PARAM1) as Coin?
-        }
+        val safeArgs: CoinDetailFragmentArgs by navArgs()
+        coin = safeArgs.coin
         setHasOptionsMenu(true)
     }
 
@@ -201,7 +194,6 @@ class CoinDetailFragment : Fragment() {
             it.coinMintMark.isEnabled = enabled
             it.coinNotes.isEnabled = enabled
         }
-
     }
 
     private fun takePhoto(requestCode: Int) {
@@ -226,26 +218,9 @@ class CoinDetailFragment : Fragment() {
 
 
     companion object {
-
         const val OBVERSE_IMAGE_CAPTURE = 1
         const val REVERSE_IMAGE_CAPTURE = 2
-
-        // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-        const val ARG_PARAM1 = "coin"
-
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param coin Parameter 1.
-         * @return A new instance of fragment NewCoinFragment.
-         */
-        @JvmStatic
-        fun newInstance(coin: Coin?) =
-            CoinDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putSerializable(ARG_PARAM1, coin)
-                }
-            }
     }
+
+
 }

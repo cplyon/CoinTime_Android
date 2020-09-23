@@ -5,6 +5,7 @@ import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import ca.cplyon.cointime.CoinTimeApplication
 import ca.cplyon.cointime.MainActivity
@@ -14,10 +15,6 @@ import ca.cplyon.cointime.databinding.ListFragmentBinding
 
 
 class CoinListFragment : Fragment(), CoinListAdapter.ContentListener {
-
-    companion object {
-        fun newInstance() = CoinListFragment()
-    }
 
     private val viewModel by activityViewModels<CoinListViewModel> {
         CoinListViewModelFactory(
@@ -83,14 +80,14 @@ class CoinListFragment : Fragment(), CoinListAdapter.ContentListener {
 
         fragmentBinding?.addCoinFab?.setOnClickListener {
             // open Coin Detail Fragment with blank values
-            (context as MainActivity).launchDetailFragment(null, "new_coin")
+            findNavController().navigate(CoinListFragmentDirections.nextAction())
         }
 
     }
 
     override fun onItemClicked(coin: Coin?) {
         // open Coin Detail Fragment with populated values
-        (context as MainActivity).launchDetailFragment(coin, "detail_coin")
+        findNavController().navigate(CoinListFragmentDirections.nextAction(coin))
     }
 
 }
