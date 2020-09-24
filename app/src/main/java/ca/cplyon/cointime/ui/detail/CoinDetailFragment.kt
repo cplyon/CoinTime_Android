@@ -54,22 +54,24 @@ class CoinDetailFragment : Fragment() {
         binding.obverse.setOnClickListener { if (editMode) takePhoto(OBVERSE_IMAGE_CAPTURE) }
         binding.reverse.setOnClickListener { if (editMode) takePhoto(REVERSE_IMAGE_CAPTURE) }
 
-        val c = coin
-        if (c != null) {
-            binding.coinCountry.setText(c.country)
-            binding.coinDenomination.setText(c.denomination)
-            binding.coinYear.setText(c.year.toString())
-            binding.coinMintMark.setText(c.mintMark)
-            binding.coinNotes.setText(c.notes)
-            if (c.obverse != null) {
-                val drawable = BitmapDrawable(resources, viewModel.loadImage(c.obverse!!))
+        coin?.let {
+            // populate UI using current coin data
+            binding.coinCountry.setText(it.country)
+            binding.coinDenomination.setText(it.denomination)
+            binding.coinYear.setText(it.year.toString())
+            binding.coinMintMark.setText(it.mintMark)
+            binding.coinNotes.setText(it.notes)
+            it.obverse?.let { obverse ->
+                val drawable = BitmapDrawable(resources, viewModel.loadImage(obverse))
                 binding.obverse.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
             }
-            if (c.reverse != null) {
-                val drawable = BitmapDrawable(resources, viewModel.loadImage(c.reverse!!))
+            it.obverse?.let { reverse ->
+                val drawable = BitmapDrawable(resources, viewModel.loadImage(reverse))
                 binding.obverse.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
             }
-        } else {
+            editMode = false
+        } ?: run {
+            // new coin, just set to edit mode
             editMode = true
         }
 
@@ -84,7 +86,6 @@ class CoinDetailFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-
         inflater.inflate(R.menu.detail_menu, menu)
         deleteButton = menu.findItem(R.id.action_delete)
         editButton = menu.findItem(R.id.action_edit)
@@ -122,29 +123,28 @@ class CoinDetailFragment : Fragment() {
                 null
             }
 
-            var c = coin
-            if (c != null) {
+            coin?.let {
                 // update current coin
-                c.country = binding.coinCountry.text.toString()
-                c.denomination = binding.coinDenomination.text.toString()
-                c.year = year
-                c.mintMark = binding.coinMintMark.text.toString()
-                c.notes = binding.coinNotes.text.toString()
+                it.country = binding.coinCountry.text.toString()
+                it.denomination = binding.coinDenomination.text.toString()
+                it.year = year
+                it.mintMark = binding.coinMintMark.text.toString()
+                it.notes = binding.coinNotes.text.toString()
                 if (obverseUpdated) {
-                    c.obverse = obversePath
+                    it.obverse = obversePath
                 }
                 if (reverseUpdated) {
-                    c.reverse = reversePath
+                    it.reverse = reversePath
                 }
 
                 // synchronize due to race condition setting lastCoinId.
                 // TODO: There's got to be a better way!
                 runBlocking {
-                    viewModel.updateCoin(c!!).join()
+                    viewModel.updateCoin(it).join()
                 }
-            } else {
+            } ?: run {
                 // create a new coin
-                c = Coin(
+                val c = Coin(
                     binding.coinCountry.text.toString(),
                     binding.coinDenomination.text.toString(),
                     year,
@@ -167,9 +167,10 @@ class CoinDetailFragment : Fragment() {
                 if (viewModel.lastCoinId != 0L) {
                     c.coinId = viewModel.lastCoinId
                 }
+                coin = c
             }
 
-            coin = c
+
             obverseUpdated = false
             reverseUpdated = false
             true

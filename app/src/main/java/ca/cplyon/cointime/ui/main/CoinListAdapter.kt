@@ -55,7 +55,6 @@ class CoinListAdapter internal constructor(
     }
 
     // TODO: figure out why we're calling onBindViewHolder for a coin even after we've deleted it
-
     override fun onBindViewHolder(holder: CoinViewHolder, position: Int) {
         // get currently selected coin based on its position in the RecyclerView
         val currentCoin = coins[position]
