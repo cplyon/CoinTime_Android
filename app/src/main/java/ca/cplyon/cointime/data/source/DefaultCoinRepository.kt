@@ -32,12 +32,22 @@ class DefaultCoinRepository(
     }
 
     override suspend fun deleteCoin(coin: Coin) {
-        localDataSource.deleteCoin(coin)
-        if (coin.obverse != null) {
-            File(coin.obverse!!).delete()
+
+        coin.obverse?.let {
+            deleteImage(it)
         }
-        if (coin.reverse != null) {
-            File(coin.reverse!!).delete()
+
+        coin.reverse?.let {
+            deleteImage(it)
+        }
+
+        localDataSource.deleteCoin(coin)
+    }
+
+    private fun deleteImage(path: String) {
+        val f = File(path)
+        if (f.exists()) {
+            f.delete()
         }
     }
 
