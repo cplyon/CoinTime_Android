@@ -127,9 +127,15 @@ class CoinDetailFragment : Fragment() {
                 it.mintMark = binding.coinMintMark.text.toString()
                 it.notes = binding.coinNotes.text.toString()
                 if (obverseUpdated) {
+                    it.obverse?.let { obverse ->
+                        viewModel.deleteImage(obverse)
+                    }
                     it.obverse = obversePath
                 }
                 if (reverseUpdated) {
+                    it.reverse?.let { reverse ->
+                        viewModel.deleteImage(reverse)
+                    }
                     it.reverse = reversePath
                 }
 
@@ -149,8 +155,6 @@ class CoinDetailFragment : Fragment() {
 
                 viewModel.addCoin(c)
             }
-            obverseUpdated = false
-            reverseUpdated = false
             findNavController().navigateUp()
             true
         }

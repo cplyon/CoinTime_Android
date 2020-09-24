@@ -43,6 +43,10 @@ class CoinDetailViewModel(private val repository: CoinRepository, application: A
         return repository.loadImage(path)
     }
 
+    fun deleteImage(path: String) {
+        repository.deleteImage(path)
+    }
+
 }
 
 

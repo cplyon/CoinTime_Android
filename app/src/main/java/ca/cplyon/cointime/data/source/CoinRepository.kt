@@ -21,4 +21,6 @@ interface CoinRepository {
 
     fun loadImage(path: String): Bitmap?
 
+    fun deleteImage(path: String)
+
 }

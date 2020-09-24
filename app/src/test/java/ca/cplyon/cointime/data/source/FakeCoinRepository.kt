@@ -46,4 +46,8 @@ class FakeCoinRepository(coins: List<Coin>) : CoinRepository {
     override fun loadImage(path: String): Bitmap {
         TODO("Not yet implemented")
     }
+
+    override fun deleteImage(path: String) {
+        TODO("Not yet implemented")
+    }
 }

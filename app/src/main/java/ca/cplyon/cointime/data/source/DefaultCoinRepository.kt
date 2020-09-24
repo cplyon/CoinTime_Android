@@ -42,7 +42,7 @@ class DefaultCoinRepository(
         }
     }
 
-    private fun deleteImage(path: String) {
+    override fun deleteImage(path: String) {
         val f = File(path)
         if (f.exists()) {
             f.delete()
@@ -50,7 +50,6 @@ class DefaultCoinRepository(
     }
 
     override suspend fun updateCoin(coin: Coin) {
-        //TODO: delete old images if coin is updated
         localDataSource.updateCoin(coin)
     }
 
