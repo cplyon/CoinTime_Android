@@ -15,16 +15,12 @@ class CoinDetailViewModel(private val repository: CoinRepository, application: A
     AndroidViewModel(
         application
     ) {
-    // the id of the last coin added
-    var lastCoinId: Long = 0
 
     /**
      * Launching a new coroutine to insert the data in a non-blocking way
      */
     fun addCoin(coin: Coin) = viewModelScope.launch(Dispatchers.IO) {
-        // it's possible there is a race condition here, since we're running addCoin in a coroutine,
-        // addCoin may not return before lastCoinId is accessed by the main thread
-        lastCoinId = repository.addCoin(coin)
+        repository.addCoin(coin)
     }
 
     fun deleteCoin(coin: Coin) = viewModelScope.launch(Dispatchers.IO) {

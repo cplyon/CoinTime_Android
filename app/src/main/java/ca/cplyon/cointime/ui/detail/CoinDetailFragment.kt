@@ -15,7 +15,6 @@ import ca.cplyon.cointime.CoinTimeApplication
 import ca.cplyon.cointime.R
 import ca.cplyon.cointime.data.Coin
 import ca.cplyon.cointime.databinding.DetailFragmentBinding
-import kotlinx.coroutines.runBlocking
 
 class CoinDetailFragment : Fragment() {
 
@@ -79,7 +78,6 @@ class CoinDetailFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        viewModel.lastCoinId = 0L
         fragmentBinding = null
         super.onDestroyView()
     }
@@ -106,7 +104,6 @@ class CoinDetailFragment : Fragment() {
         }
 
         R.id.action_save -> {
-            setEditMode(false)
             val yearText = binding.coinYear.text.toString()
             val year = if (yearText.isBlank()) 0 else yearText.toInt()
 
@@ -136,11 +133,8 @@ class CoinDetailFragment : Fragment() {
                     it.reverse = reversePath
                 }
 
-                // synchronize due to race condition setting lastCoinId.
-                // TODO: There's got to be a better way!
-                runBlocking {
-                    viewModel.updateCoin(it).join()
-                }
+                viewModel.updateCoin(it)
+
             } ?: run {
                 // create a new coin
                 val c = Coin(
@@ -153,25 +147,11 @@ class CoinDetailFragment : Fragment() {
                 c.obverse = obversePath
                 c.reverse = reversePath
 
-                // synchronize due to race condition setting lastCoinId.
-                // TODO: There's got to be a better way!
-                runBlocking {
-                    viewModel.addCoin(c).join()
-                }
-
-                // The id for a new coin is 0 until it is entered into the database, where the id is
-                // changed to be unique and set in viewModel.lastCoinId. So if we try to delete a
-                // coin from this fragment instance, we don't know the id yet, and so are unable to
-                // delete it until we relaunch the listview and refetch it from the database.
-                if (viewModel.lastCoinId != 0L) {
-                    c.coinId = viewModel.lastCoinId
-                }
-                coin = c
+                viewModel.addCoin(c)
             }
-
-
             obverseUpdated = false
             reverseUpdated = false
+            findNavController().navigateUp()
             true
         }
 
