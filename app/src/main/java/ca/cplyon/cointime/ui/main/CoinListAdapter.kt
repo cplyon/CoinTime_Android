@@ -1,7 +1,6 @@
 package ca.cplyon.cointime.ui.main
 
 import android.content.Context
-import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,8 @@ import java.util.*
 
 class CoinListAdapter internal constructor(
     context: Context,
-    private val listener: ContentListener
+    private val listener: ContentListener,
+    private val viewModel: CoinListViewModel
 ) : RecyclerView.Adapter<CoinListAdapter.CoinViewHolder>(), Filterable {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -40,8 +40,8 @@ class CoinListAdapter internal constructor(
             currentCoin = coin
 
             // update list view item
-            if (currentCoin.obverse != null) {
-                coinItemView.coin_image.setImageBitmap(BitmapFactory.decodeFile(currentCoin.obverse))
+            currentCoin.obverse?.let {
+                coinItemView.coin_image.setImageBitmap(viewModel.repository.loadImage(it))
             }
             coinItemView.country.text = currentCoin.country
             coinItemView.details.text = buildString {
@@ -53,6 +53,8 @@ class CoinListAdapter internal constructor(
 
         }
     }
+
+    // TODO: figure out why we're calling onBindViewHolder for a coin even after we've deleted it
 
     override fun onBindViewHolder(holder: CoinViewHolder, position: Int) {
         // get currently selected coin based on its position in the RecyclerView

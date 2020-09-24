@@ -35,7 +35,7 @@ class CoinListFragment : Fragment(), CoinListAdapter.ContentListener {
 
         val binding = ListFragmentBinding.inflate(layoutInflater, container, false)
 
-        adapter = CoinListAdapter(this.requireContext(), this)
+        adapter = CoinListAdapter(this.requireContext(), this, viewModel)
 
         binding.recyclerview.setHasFixedSize(true)
         binding.recyclerview.adapter = adapter

@@ -7,7 +7,7 @@ import ca.cplyon.cointime.data.Result.Success
 import ca.cplyon.cointime.data.source.CoinRepository
 import kotlinx.coroutines.launch
 
-class CoinListViewModel(repository: CoinRepository) : ViewModel() {
+class CoinListViewModel(val repository: CoinRepository) : ViewModel() {
 
     private var _items: LiveData<List<Coin>> =
         repository.observeCoins().switchMap { filterCoins(it) }
