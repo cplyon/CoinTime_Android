@@ -32,7 +32,7 @@ class DefaultCoinRepository(
     }
 
     override suspend fun deleteCoin(coin: Coin) {
-
+        localDataSource.deleteCoin(coin)
         coin.obverse?.let {
             deleteImage(it)
         }
@@ -40,8 +40,6 @@ class DefaultCoinRepository(
         coin.reverse?.let {
             deleteImage(it)
         }
-
-        localDataSource.deleteCoin(coin)
     }
 
     private fun deleteImage(path: String) {
@@ -72,8 +70,12 @@ class DefaultCoinRepository(
         return path.toString()
     }
 
-    override fun loadImage(path: String): Bitmap {
-        return BitmapFactory.decodeFile(path)
+    override fun loadImage(path: String): Bitmap? {
+        val f = File(path)
+        if (f.exists()) {
+            return BitmapFactory.decodeFile(path)
+        }
+        return null
     }
 
     private fun generateImagePath(context: Context, suffix: String): Path {

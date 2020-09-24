@@ -19,6 +19,6 @@ interface CoinRepository {
 
     fun saveImage(context: Context, image: Bitmap, suffix: String): String?
 
-    fun loadImage(path: String): Bitmap
+    fun loadImage(path: String): Bitmap?
 
 }

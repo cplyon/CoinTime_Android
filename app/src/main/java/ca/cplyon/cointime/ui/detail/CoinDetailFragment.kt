@@ -9,6 +9,7 @@ import android.provider.MediaStore
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ca.cplyon.cointime.CoinTimeApplication
 import ca.cplyon.cointime.MainActivity
@@ -97,7 +98,7 @@ class CoinDetailFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_delete -> {
             viewModel.deleteCoin(coin!!)
-            (context as MainActivity).onBackPressed()
+            findNavController().navigateUp()
             true
         }
 
@@ -229,11 +230,9 @@ class CoinDetailFragment : Fragment() {
         }
     }
 
-
     companion object {
         const val OBVERSE_IMAGE_CAPTURE = 1
         const val REVERSE_IMAGE_CAPTURE = 2
     }
-
 
 }

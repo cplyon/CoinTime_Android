@@ -43,7 +43,7 @@ class CoinDetailViewModel(private val repository: CoinRepository, application: A
         return repository.saveImage(getApplication(), image, "reverse")
     }
 
-    fun loadImage(path: String): Bitmap {
+    fun loadImage(path: String): Bitmap? {
         return repository.loadImage(path)
     }
 

@@ -34,21 +34,21 @@ class CoinListAdapter internal constructor(
 
     inner class CoinViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val coinItemView = binding.listItem
-        private lateinit var currentCoin: Coin
 
         fun bind(coin: Coin) {
-            currentCoin = coin
-
             // update list view item
-            currentCoin.obverse?.let {
-                coinItemView.coin_image.setImageBitmap(viewModel.repository.loadImage(it))
+            coin.obverse?.let {
+                val bitmap = viewModel.repository.loadImage(it)
+                bitmap?.let { image ->
+                    coinItemView.coin_image.setImageBitmap(image)
+                }
             }
-            coinItemView.country.text = currentCoin.country
+            coinItemView.country.text = coin.country
             coinItemView.details.text = buildString {
-                append(currentCoin.denomination)
+                append(coin.denomination)
                 append(" ")
-                append(currentCoin.year)
-                append(currentCoin.mintMark)
+                append(coin.year)
+                append(coin.mintMark)
             }
 
         }
