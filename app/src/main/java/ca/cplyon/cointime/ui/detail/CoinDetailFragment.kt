@@ -12,7 +12,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ca.cplyon.cointime.CoinTimeApplication
-import ca.cplyon.cointime.MainActivity
 import ca.cplyon.cointime.R
 import ca.cplyon.cointime.data.Coin
 import ca.cplyon.cointime.databinding.DetailFragmentBinding
@@ -49,7 +48,6 @@ class CoinDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding = DetailFragmentBinding.inflate(layoutInflater, container, false)
 
         binding.obverse.setOnClickListener { if (editMode) takePhoto(OBVERSE_IMAGE_CAPTURE) }

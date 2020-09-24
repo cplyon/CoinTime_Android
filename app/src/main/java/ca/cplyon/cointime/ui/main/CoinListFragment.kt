@@ -8,7 +8,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import ca.cplyon.cointime.CoinTimeApplication
-import ca.cplyon.cointime.MainActivity
 import ca.cplyon.cointime.R
 import ca.cplyon.cointime.data.Coin
 import ca.cplyon.cointime.databinding.ListFragmentBinding
@@ -31,10 +30,7 @@ class CoinListFragment : Fragment(), CoinListAdapter.ContentListener {
     ): View {
 
         setHasOptionsMenu(true)
-        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
-
         val binding = ListFragmentBinding.inflate(layoutInflater, container, false)
-
         adapter = CoinListAdapter(this.requireContext(), this, viewModel)
 
         binding.recyclerview.setHasFixedSize(true)
