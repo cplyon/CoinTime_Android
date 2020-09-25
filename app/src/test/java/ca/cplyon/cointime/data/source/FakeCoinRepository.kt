@@ -11,12 +11,17 @@ class FakeCoinRepository(coins: List<Coin>) : CoinRepository {
 
     private var shouldReturnError = false
     private var result: Result<List<Coin>> = Result.Success(coins)
+    private var bitmap: Bitmap? = null
 
     fun setReturnError(value: Boolean) {
         shouldReturnError = value
         if (value) {
             result = Result.Error(Exception("Fake exception"))
+            bitmap = null
+        } else {
+            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
         }
+
     }
 
     override suspend fun getAllCoins(): Result<List<Coin>> {
@@ -43,8 +48,8 @@ class FakeCoinRepository(coins: List<Coin>) : CoinRepository {
         TODO("Not yet implemented")
     }
 
-    override fun loadImage(path: String): Bitmap {
-        TODO("Not yet implemented")
+    override fun loadImage(path: String): Bitmap? {
+        return bitmap
     }
 
     override fun deleteImage(path: String) {

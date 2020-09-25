@@ -33,6 +33,7 @@ class CoinListViewModelUnitTest {
 
     @Test
     fun filterCoins_success() {
+        fakeRepository.setReturnError(false)
         val observer = Observer<List<Coin>> {}
         vm = CoinListViewModel(fakeRepository)
         try {
@@ -42,7 +43,6 @@ class CoinListViewModelUnitTest {
             vm.items.removeObserver(observer)
         }
     }
-
 
     @Test
     fun filterCoins_failure() {
@@ -55,6 +55,13 @@ class CoinListViewModelUnitTest {
         } finally {
             vm.items.removeObserver(observer)
         }
+    }
+
+    @Test
+    fun loadImage_failure() {
+        fakeRepository.setReturnError(true)
+        vm = CoinListViewModel(fakeRepository)
+        Assert.assertNull(vm.loadImage("fake_path"))
     }
 
 }
