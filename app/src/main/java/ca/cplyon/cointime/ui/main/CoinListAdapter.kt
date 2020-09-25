@@ -38,8 +38,8 @@ class CoinListAdapter internal constructor(
         fun bind(coin: Coin) {
             // update list view item
             coin.obverse?.let {
-                val bitmap = viewModel.repository.loadImage(it)
-                bitmap?.let { image ->
+                // fallback to the default image if we can't load the actual image
+                viewModel.loadImage(it)?.let { image ->
                     coinItemView.coin_image.setImageBitmap(image)
                 }
             }

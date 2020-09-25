@@ -1,5 +1,6 @@
 package ca.cplyon.cointime.ui.main
 
+import android.graphics.Bitmap
 import androidx.lifecycle.*
 import ca.cplyon.cointime.data.Coin
 import ca.cplyon.cointime.data.Result
@@ -7,7 +8,7 @@ import ca.cplyon.cointime.data.Result.Success
 import ca.cplyon.cointime.data.source.CoinRepository
 import kotlinx.coroutines.launch
 
-class CoinListViewModel(val repository: CoinRepository) : ViewModel() {
+class CoinListViewModel(private val repository: CoinRepository) : ViewModel() {
 
     private var _items: LiveData<List<Coin>> =
         repository.observeCoins().switchMap { filterCoins(it) }
@@ -24,6 +25,10 @@ class CoinListViewModel(val repository: CoinRepository) : ViewModel() {
         }
 
         return result
+    }
+
+    fun loadImage(path: String): Bitmap? {
+        return repository.loadImage(path)
     }
 
 }
