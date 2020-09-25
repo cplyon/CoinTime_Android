@@ -6,6 +6,7 @@ import ca.cplyon.cointime.data.Coin
 import ca.cplyon.cointime.data.Result
 import ca.cplyon.cointime.data.Result.Success
 import ca.cplyon.cointime.data.source.CoinRepository
+import ca.cplyon.cointime.data.succeeded
 import kotlinx.coroutines.launch
 
 class CoinListViewModel(private val repository: CoinRepository) : ViewModel() {
@@ -16,9 +17,9 @@ class CoinListViewModel(private val repository: CoinRepository) : ViewModel() {
 
     private fun filterCoins(coinResult: Result<List<Coin>>): LiveData<List<Coin>> {
         val result = MutableLiveData<List<Coin>>()
-        if (coinResult is Success) {
+        if (coinResult.succeeded) {
             viewModelScope.launch {
-                result.value = coinResult.data
+                result.value = (coinResult as Success).data
             }
         } else {
             result.value = emptyList()
