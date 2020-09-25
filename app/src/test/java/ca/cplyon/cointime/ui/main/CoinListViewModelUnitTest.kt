@@ -64,4 +64,18 @@ class CoinListViewModelUnitTest {
         Assert.assertNull(vm.loadImage("fake_path"))
     }
 
+    @Test
+    fun factory_success() {
+        fakeRepository.setReturnError(false)
+        val observer = Observer<List<Coin>> {}
+        val vm = CoinListViewModelFactory(fakeRepository).create(CoinListViewModel::class.java)
+        Assert.assertNotNull(vm)
+        try {
+            vm.items.observeForever(observer)
+            Assert.assertEquals(vm.items.value, coins)
+        } finally {
+            vm.items.removeObserver(observer)
+        }
+    }
+
 }
