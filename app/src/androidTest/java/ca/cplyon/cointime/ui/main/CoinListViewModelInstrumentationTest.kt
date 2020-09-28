@@ -22,7 +22,7 @@ class CoinListViewModelInstrumentationTest {
 
     @Test
     fun loadImage_success() {
-        fakeRepository.setReturnError(false)
+        fakeRepository.returnError = false
         vm = CoinListViewModel(fakeRepository)
         Assert.assertNotNull(vm.loadImage("fake_path"))
     }

@@ -7,22 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import ca.cplyon.cointime.data.Coin
 import ca.cplyon.cointime.data.Result
 
-class FakeCoinRepositoryInstrumentation(coins: List<Coin>) : CoinRepository {
+class FakeCoinRepositoryInstrumentation(private val coins: List<Coin>) : CoinRepository {
 
-    private var shouldReturnError = false
-    private var result: Result<List<Coin>> = Result.Success(coins)
-    private var bitmap: Bitmap? = null
-
-    fun setReturnError(value: Boolean) {
-        shouldReturnError = value
-        if (value) {
-            result = Result.Error(Exception("Fake exception"))
-            bitmap = null
-        } else {
-            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
-        }
-
-    }
+    var returnError = false
 
     override suspend fun getAllCoins(): Result<List<Coin>> {
         TODO("Not yet implemented")
@@ -33,6 +20,11 @@ class FakeCoinRepositoryInstrumentation(coins: List<Coin>) : CoinRepository {
     }
 
     override fun observeCoins(): LiveData<Result<List<Coin>>> {
+
+        var result: Result<List<Coin>> = Result.Success(coins)
+        if (returnError) {
+            result = Result.Error(Exception("Fake exception"))
+        }
         return MutableLiveData(result)
     }
 
@@ -45,11 +37,17 @@ class FakeCoinRepositoryInstrumentation(coins: List<Coin>) : CoinRepository {
     }
 
     override fun saveImage(context: Context, image: Bitmap, suffix: String): String? {
-        TODO("Not yet implemented")
+        if (returnError) {
+            return null
+        }
+        return "fake_file_name_$suffix.png"
     }
 
     override fun loadImage(path: String): Bitmap? {
-        return bitmap
+        if (returnError) {
+            return null
+        }
+        return Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
     }
 
     override fun deleteImage(path: String) {
