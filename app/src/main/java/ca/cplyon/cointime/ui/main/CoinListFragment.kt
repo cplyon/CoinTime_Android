@@ -41,12 +41,15 @@ class CoinListFragment : Fragment(), CoinListAdapter.ContentListener {
         binding.recyclerview.adapter = adapter
         binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
 
-        viewModel.items.observe(viewLifecycleOwner, { coins ->
-            coins?.let {
-                adapter.setCoins(it)
-                adapter.notifyDataSetChanged()
+        viewModel.items.observe(
+            viewLifecycleOwner,
+            { coins ->
+                coins?.let {
+                    adapter.setCoins(it)
+                    adapter.notifyDataSetChanged()
+                }
             }
-        })
+        )
 
         fragmentBinding = binding
         return binding.root
@@ -60,17 +63,19 @@ class CoinListFragment : Fragment(), CoinListAdapter.ContentListener {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main_menu, menu)
         val item = menu.findItem(R.id.action_search)
-        (item.actionView as SearchView).setOnQueryTextListener(object :
-            SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                return false
-            }
+        (item.actionView as SearchView).setOnQueryTextListener(
+            object :
+                SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    return false
+                }
 
-            override fun onQueryTextChange(newText: String): Boolean {
-                adapter.filter.filter(newText)
-                return false
+                override fun onQueryTextChange(newText: String): Boolean {
+                    adapter.filter.filter(newText)
+                    return false
+                }
             }
-        })
+        )
 
         super.onCreateOptionsMenu(menu, inflater)
     }
