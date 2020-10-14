@@ -21,7 +21,6 @@ class FakeCoinRepository(coins: List<Coin>) : CoinRepository {
         } else {
             bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
         }
-
     }
 
     override suspend fun getAllCoins(): Result<List<Coin>> {

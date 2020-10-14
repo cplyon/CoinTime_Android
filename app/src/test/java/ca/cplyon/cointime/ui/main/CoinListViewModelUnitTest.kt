@@ -77,5 +77,4 @@ class CoinListViewModelUnitTest {
             vm.items.removeObserver(observer)
         }
     }
-
 }

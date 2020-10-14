@@ -26,5 +26,4 @@ class CoinListViewModelInstrumentationTest {
         vm = CoinListViewModel(fakeRepository)
         Assert.assertNotNull(vm.loadImage("fake_path"))
     }
-
 }

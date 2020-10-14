@@ -1,6 +1,5 @@
 package ca.cplyon.cointime.data.source.local
 
-
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import ca.cplyon.cointime.data.Coin

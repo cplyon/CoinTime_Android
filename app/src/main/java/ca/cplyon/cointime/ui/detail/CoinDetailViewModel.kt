@@ -46,9 +46,7 @@ class CoinDetailViewModel(private val repository: CoinRepository, application: A
     fun deleteImage(path: String) {
         repository.deleteImage(path)
     }
-
 }
-
 
 @Suppress("UNCHECKED_CAST")
 class CoinDetailViewModelFactory(

@@ -7,5 +7,4 @@ class CoinTimeApplication : Application() {
 
     val coinRepository: CoinRepository
         get() = ServiceLocator.provideCoinRepository(this)
-
 }

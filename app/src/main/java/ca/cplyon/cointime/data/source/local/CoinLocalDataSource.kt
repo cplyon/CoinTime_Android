@@ -41,5 +41,4 @@ class CoinLocalDataSource internal constructor(
     override suspend fun updateCoin(coin: Coin) = withContext(ioDispatcher) {
         coinDao.updateCoin(coin)
     }
-
 }

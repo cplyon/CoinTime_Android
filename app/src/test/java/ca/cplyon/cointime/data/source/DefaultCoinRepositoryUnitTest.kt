@@ -25,5 +25,4 @@ class DefaultCoinRepositoryUnitTest {
         val id = repository.addCoin(coin)
         Assert.assertEquals(id, 191919)
     }
-
 }

@@ -31,9 +31,7 @@ class CoinListViewModel(private val repository: CoinRepository) : ViewModel() {
     fun loadImage(path: String): Bitmap? {
         return repository.loadImage(path)
     }
-
 }
-
 
 @Suppress("UNCHECKED_CAST")
 class CoinListViewModelFactory(

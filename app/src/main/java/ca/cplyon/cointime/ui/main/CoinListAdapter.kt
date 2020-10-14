@@ -50,7 +50,6 @@ class CoinListAdapter internal constructor(
                 append(coin.year)
                 append(coin.mintMark)
             }
-
         }
     }
 
@@ -112,8 +111,6 @@ class CoinListAdapter internal constructor(
                 }
                 notifyDataSetChanged()
             }
-
         }
     }
-
 }

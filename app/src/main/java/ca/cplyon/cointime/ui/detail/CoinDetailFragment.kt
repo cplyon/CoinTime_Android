@@ -46,7 +46,8 @@ class CoinDetailFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DetailFragmentBinding.inflate(layoutInflater, container, false)
@@ -142,7 +143,6 @@ class CoinDetailFragment : Fragment() {
                 }
 
                 viewModel.updateCoin(it)
-
             } ?: run {
                 // create a new coin
                 val c = Coin(
@@ -224,5 +224,4 @@ class CoinDetailFragment : Fragment() {
         const val OBVERSE_IMAGE_CAPTURE = 1
         const val REVERSE_IMAGE_CAPTURE = 2
     }
-
 }

@@ -12,7 +12,6 @@ import ca.cplyon.cointime.R
 import ca.cplyon.cointime.data.Coin
 import ca.cplyon.cointime.databinding.ListFragmentBinding
 
-
 class CoinListFragment : Fragment(), CoinListAdapter.ContentListener {
 
     private val viewModel by activityViewModels<CoinListViewModel> {
@@ -25,7 +24,8 @@ class CoinListFragment : Fragment(), CoinListAdapter.ContentListener {
     private lateinit var adapter: CoinListAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
@@ -78,12 +78,10 @@ class CoinListFragment : Fragment(), CoinListAdapter.ContentListener {
             // open Coin Detail Fragment with blank values
             findNavController().navigate(CoinListFragmentDirections.nextAction())
         }
-
     }
 
     override fun onItemClicked(coin: Coin?) {
         // open Coin Detail Fragment with populated values
         findNavController().navigate(CoinListFragmentDirections.nextAction(coin))
     }
-
 }

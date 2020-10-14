@@ -14,7 +14,6 @@ import java.nio.file.Paths
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class DefaultCoinRepository(
     private val localDataSource: CoinDataSource
 ) : CoinRepository {
@@ -83,5 +82,4 @@ class DefaultCoinRepository(
             SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date()) + "_$suffix.png"
         return Paths.get(storageDir.toString(), filename)
     }
-
 }

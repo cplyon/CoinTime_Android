@@ -32,5 +32,4 @@ class FakeLocalDataSource : CoinDataSource {
     fun setNextCoinId(id: Long) {
         coinId = id
     }
-
 }

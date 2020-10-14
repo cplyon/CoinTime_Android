@@ -16,7 +16,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 class CoinDaoTest {
@@ -62,7 +61,6 @@ class CoinDaoTest {
         assertThat(loaded[0].reverse, `is`(coin.reverse))
     }
 
-
     @Test(expected = android.database.sqlite.SQLiteConstraintException::class)
     fun insertCoin_abort() = runBlockingTest {
         // GIVEN - Insert a coin.
@@ -73,7 +71,6 @@ class CoinDaoTest {
         database.coinDao().addCoin(coin)
 
         // THEN - The expected exception gets thrown.
-
     }
 
     @Test
@@ -90,7 +87,6 @@ class CoinDaoTest {
         assertThat(loaded, notNullValue())
         assertThat(loaded.size, `is`(0))
     }
-
 
     @Test
     fun updateCoin() = runBlockingTest {
@@ -121,5 +117,4 @@ class CoinDaoTest {
         assertThat(loaded[0].obverse, `is`(coin.obverse))
         assertThat(loaded[0].reverse, `is`(coin.reverse))
     }
-
 }
