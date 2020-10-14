@@ -1,7 +1,12 @@
 package ca.cplyon.cointime.ui.main
 
 import android.graphics.Bitmap
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.switchMap
+import androidx.lifecycle.viewModelScope
 import ca.cplyon.cointime.data.Coin
 import ca.cplyon.cointime.data.Result
 import ca.cplyon.cointime.data.Result.Success

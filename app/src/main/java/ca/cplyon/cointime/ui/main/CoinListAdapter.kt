@@ -10,8 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import ca.cplyon.cointime.R
 import ca.cplyon.cointime.data.Coin
 import ca.cplyon.cointime.databinding.RecyclerviewItemBinding
+import java.util.Collections
+import java.util.Locale
 import kotlinx.android.synthetic.main.recyclerview_item.view.*
-import java.util.*
 
 class CoinListAdapter internal constructor(
     context: Context,
