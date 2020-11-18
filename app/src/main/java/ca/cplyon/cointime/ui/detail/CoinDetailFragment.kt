@@ -71,9 +71,9 @@ class CoinDetailFragment : Fragment() {
                 val drawable = BitmapDrawable(resources, viewModel.loadImage(obverse))
                 binding.obverse.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
             }
-            it.obverse?.let { reverse ->
+            it.reverse?.let { reverse ->
                 val drawable = BitmapDrawable(resources, viewModel.loadImage(reverse))
-                binding.obverse.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
+                binding.reverse.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
             }
             editMode = false
         } ?: run {
@@ -215,7 +215,7 @@ class CoinDetailFragment : Fragment() {
             obverseUpdated = true
         } else if (requestCode == REVERSE_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             val bitmap = data?.extras?.get("data") as Bitmap
-            binding.obverse.setCompoundDrawablesWithIntrinsicBounds(
+            binding.reverse.setCompoundDrawablesWithIntrinsicBounds(
                 null,
                 BitmapDrawable(resources, bitmap),
                 null,
