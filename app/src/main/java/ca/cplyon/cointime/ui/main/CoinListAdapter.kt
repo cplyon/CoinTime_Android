@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import ca.cplyon.cointime.R
 import ca.cplyon.cointime.data.Coin
 import ca.cplyon.cointime.databinding.RecyclerviewItemBinding
-import kotlinx.android.synthetic.main.recyclerview_item.view.*
 import java.util.Collections
 import java.util.Locale
 
@@ -34,18 +33,17 @@ class CoinListAdapter internal constructor(
     }
 
     inner class CoinViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val coinItemView = binding.listItem
 
         fun bind(coin: Coin) {
             // update list view item
             coin.obverse?.let {
                 // fallback to the default image if we can't load the actual image
                 viewModel.loadImage(it)?.let { image ->
-                    coinItemView.coin_image.setImageBitmap(image)
+                    binding.coinImage.setImageBitmap(image)
                 }
             }
-            coinItemView.country.text = coin.country
-            coinItemView.details.text = buildString {
+            binding.country.text = coin.country
+            binding.details.text = buildString {
                 append(coin.denomination)
                 append(" ")
                 append(coin.year)
