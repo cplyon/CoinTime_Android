@@ -82,5 +82,13 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     androidTestImplementation "androidx.arch.core:core-testing:$core_testing_version"
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_test_version"
+    androidTestImplementation "androidx.test:runner:$androidx_test_runner"
+    androidTestImplementation "androidx.test:rules:$androidx_test_runner"
+    debugImplementation 'androidx.fragment:fragment-testing:1.2.5'
+}
 
+configurations.all {
+    resolutionStrategy {
+        force "androidx.test:monitor:$androidx_test_runner"
+    }
 }
