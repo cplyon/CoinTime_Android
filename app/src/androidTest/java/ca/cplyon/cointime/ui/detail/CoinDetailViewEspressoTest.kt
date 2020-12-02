@@ -25,7 +25,8 @@ class CoinDetailViewEspressoTest {
     fun obverse_exists_new_coin_test() {
         launchFragmentInContainer<CoinDetailFragment>(
             fragmentArgs = bundleOf("coin" to null),
-            themeResId = R.style.AppTheme)
+            themeResId = R.style.AppTheme
+        )
         onView(withId(R.id.obverse)).check(matches(isDisplayed()))
     }
 
@@ -33,8 +34,8 @@ class CoinDetailViewEspressoTest {
     fun reverse_exists_new_coin_test() {
         launchFragmentInContainer<CoinDetailFragment>(
             fragmentArgs = bundleOf("coin" to null),
-            themeResId = R.style.AppTheme)
+            themeResId = R.style.AppTheme
+        )
         onView(withId(R.id.reverse)).check(matches(isDisplayed()))
     }
-
 }
