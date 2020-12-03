@@ -81,7 +81,9 @@ dependencies {
     androidTestImplementation "androidx.arch.core:core-testing:$core_testing_version"
     androidTestImplementation "androidx.navigation:navigation-testing:$navigation_version"
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$espresso_version"
     androidTestImplementation "androidx.test:rules:$androidx_test_runner"
     androidTestImplementation "androidx.test:runner:$androidx_test_runner"
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_test_version"
