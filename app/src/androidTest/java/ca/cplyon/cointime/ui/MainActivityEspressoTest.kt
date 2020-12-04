@@ -83,7 +83,8 @@ class MainActivityEspressoTest {
         onView(withId(R.id.recyclerview)).perform(RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(hasDescendant(withText(country))))
         onView(withId(R.id.recyclerview)).perform(
             RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(
-                hasDescendant(withText(country)), click()
+                hasDescendant(withText(country)),
+                click()
             )
         )
 
