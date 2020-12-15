@@ -60,6 +60,8 @@ class MainActivityEspressoTest {
         onView(withId(R.id.action_delete)).check(matches(not(isEnabled())))
     }
 
+    // TODO: enable test database for Espresso tests
+/*
     @Test
     fun verify_new_coin_added_deleted_test() {
         val country = "ESPRESSO"
@@ -95,8 +97,8 @@ class MainActivityEspressoTest {
         // on list view
         onView(withId(R.id.recyclerview)).perform(RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(not(hasDescendant(withText(country)))))
     }
-
-    // TODO figure out how to validate images are the same using Espresso
+*/
+    // TODO: figure out how to validate images are the same using Espresso
 /*
     @Test
     fun obverse_camera_intent_launch_test() {
