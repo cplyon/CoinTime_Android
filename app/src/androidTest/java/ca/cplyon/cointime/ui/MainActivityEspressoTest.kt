@@ -61,7 +61,7 @@ class MainActivityEspressoTest {
     }
 
     @Test
-    fun verify_new_coin_added_test() {
+    fun verify_new_coin_added_deleted_test() {
         val country = "ESPRESSO"
         val denomination = "25 cents"
         val year = "2020"
@@ -90,6 +90,10 @@ class MainActivityEspressoTest {
 
         // on detail view
         onView(withId(R.id.coinCountry)).check(matches(withText(country)))
+        onView(withId(R.id.action_delete)).perform(click())
+
+        // on list view
+        onView(withId(R.id.recyclerview)).perform(RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(not(hasDescendant(withText(country)))))
     }
 
     // TODO figure out how to validate images are the same using Espresso
