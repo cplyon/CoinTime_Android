@@ -1,5 +1,6 @@
 package ca.cplyon.cointime.ui.main
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -80,9 +81,9 @@ class CoinListFragment : Fragment(), CoinListAdapter.ContentListener {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        //super.onActivityCreated(savedInstanceState)
         fragmentBinding?.addCoinFab?.setOnClickListener {
             // open Coin Detail Fragment with blank values
             findNavController().navigate(CoinListFragmentDirections.nextAction())

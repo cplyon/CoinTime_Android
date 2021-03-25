@@ -1,5 +1,6 @@
 package ca.cplyon.cointime.ui.main
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -20,6 +21,7 @@ class CoinListViewModel(private val repository: CoinRepository) : ViewModel() {
         repository.observeCoins().switchMap { filterCoins(it) }
     val items: LiveData<List<Coin>> = _items
 
+    @SuppressLint("NullSafeMutableLiveData")
     private fun filterCoins(coinResult: Result<List<Coin>>): LiveData<List<Coin>> {
         val result = MutableLiveData<List<Coin>>()
         if (coinResult.succeeded) {

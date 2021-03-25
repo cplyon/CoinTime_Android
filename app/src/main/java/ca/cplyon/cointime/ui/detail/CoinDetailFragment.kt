@@ -13,6 +13,8 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -196,32 +198,31 @@ class CoinDetailFragment : Fragment() {
     }
 
     private fun takePhoto(requestCode: Int) {
-        startActivityForResult(
-            Intent(MediaStore.ACTION_IMAGE_CAPTURE),
-            requestCode
-        )
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            onActivityResult(requestCode, result)
+        }.launch(Intent(MediaStore.ACTION_IMAGE_CAPTURE))
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == OBVERSE_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            val bitmap = data?.extras?.get("data") as Bitmap
-            binding.obverse.setCompoundDrawablesWithIntrinsicBounds(
-                null,
-                BitmapDrawable(resources, bitmap),
-                null,
-                null
-            )
-            obverseUpdated = true
-        } else if (requestCode == REVERSE_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            val bitmap = data?.extras?.get("data") as Bitmap
-            binding.reverse.setCompoundDrawablesWithIntrinsicBounds(
-                null,
-                BitmapDrawable(resources, bitmap),
-                null,
-                null
-            )
-            reverseUpdated = true
+    private fun onActivityResult(requestCode: Int, result: ActivityResult) {
+        if (result.resultCode == RESULT_OK) {
+            val bitmap = result.data?.extras?.get("data") as Bitmap
+            if (requestCode == OBVERSE_IMAGE_CAPTURE) {
+                binding.obverse.setCompoundDrawablesWithIntrinsicBounds(
+                    null,
+                    BitmapDrawable(resources, bitmap),
+                    null,
+                    null
+                )
+                obverseUpdated = true
+            } else if (requestCode == REVERSE_IMAGE_CAPTURE) {
+                binding.reverse.setCompoundDrawablesWithIntrinsicBounds(
+                    null,
+                    BitmapDrawable(resources, bitmap),
+                    null,
+                    null
+                )
+                reverseUpdated = true
+            }
         }
     }
 
