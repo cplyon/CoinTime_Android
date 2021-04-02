@@ -83,7 +83,6 @@ class CoinListFragment : Fragment(), CoinListAdapter.ContentListener {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        //super.onActivityCreated(savedInstanceState)
         fragmentBinding?.addCoinFab?.setOnClickListener {
             // open Coin Detail Fragment with blank values
             findNavController().navigate(CoinListFragmentDirections.nextAction())
