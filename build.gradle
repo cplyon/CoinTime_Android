@@ -17,7 +17,7 @@ buildscript {
 }
 
 plugins {
-    id "org.jlleitschuh.gradle.ktlint" version "9.4.1"
+    id "org.jlleitschuh.gradle.ktlint" version "10.0.0"
 }
 
 if (hasProperty('buildScan')) {
@@ -30,7 +30,7 @@ if (hasProperty('buildScan')) {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     apply plugin: "org.jlleitschuh.gradle.ktlint"
 }
