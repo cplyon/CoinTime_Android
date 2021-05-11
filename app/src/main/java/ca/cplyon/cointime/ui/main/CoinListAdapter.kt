@@ -94,8 +94,8 @@ class CoinListAdapter internal constructor(
                     val newCoins = allCoins
                     filteredCoinList.addAll(
                         newCoins.filter {
-                            it.toString().toLowerCase(Locale.ROOT)
-                                .contains(constraint.toString().toLowerCase(Locale.ROOT))
+                            it.toString().lowercase(Locale.ROOT)
+                                .contains(constraint.toString().lowercase(Locale.ROOT))
                         }
                     )
                 }
