@@ -7,7 +7,7 @@ import ca.cplyon.cointime.data.source.CoinDataSource
 
 class FakeLocalDataSource : CoinDataSource {
 
-    var coinId = 1L
+    private var coinId = 1L
 
     override suspend fun getAllCoins(): Result<List<Coin>> {
         TODO("Not yet implemented")
