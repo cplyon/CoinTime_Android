@@ -70,7 +70,7 @@ dependencies {
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_test_version"
 
     // Mockito framework
-    testImplementation 'org.mockito:mockito-core:3.11.0'
+    testImplementation 'org.mockito:mockito-core:3.11.2'
 
     // Robolectric environment
     testImplementation "androidx.test:core:$androidx_test_runner_version"
