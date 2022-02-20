@@ -1,14 +1,14 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext.kotlin_version = "1.6.10"
-    ext.navigation_version = "2.3.5"
+    ext.navigation_version = "2.4.1"
 
     repositories {
         google()
     }
     dependencies {
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigation_version"
-        classpath 'com.android.tools.build:gradle:7.0.4'
+        classpath 'com.android.tools.build:gradle:7.1.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -17,7 +17,7 @@ buildscript {
 }
 
 plugins {
-    id "org.jlleitschuh.gradle.ktlint" version "10.1.0"
+    id "org.jlleitschuh.gradle.ktlint" version "10.2.1"
 }
 
 if (hasProperty('buildScan')) {
@@ -52,9 +52,9 @@ ext {
     core_testing_version = "2.1.0"
     coroutines_test_version = "1.4.0"
     espresso_version = "3.4.0"
-    fragment_version = "1.4.0"
+    fragment_version = "1.4.1"
     lifecycle_extensions_version = "2.3.0"
-    lifecycle_version = "2.4.0"
-    room_version = "2.4.0"
+    lifecycle_version = "2.4.1"
+    room_version = "2.4.1"
 }
 
