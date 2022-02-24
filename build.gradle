@@ -55,6 +55,6 @@ ext {
     fragment_version = "1.4.1"
     lifecycle_extensions_version = "2.3.0"
     lifecycle_version = "2.4.1"
-    room_version = "2.4.1"
+    room_version = "2.4.2"
 }
 
